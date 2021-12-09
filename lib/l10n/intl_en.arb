@@ -1,0 +1,9 @@
+{
+  "applicationName" : "Filmoow",
+  "noCaughtPokemonPageText" : "Any Pokemon has been caught yet",
+  "genericErrorEmptyStateTitle" : "Something went wrong, try again.",
+  "genericErrorEmptyStateButtonText" : "Try Again",
+  "genericErrorDialogPrimaryText": "Oops! Something went wrong!",
+  "genericErrorDialogSecondaryText": "Please try again later.",
+  "genericErrorDialogButtonText": "Close"
+}
