@@ -18,6 +18,8 @@ import 'package:filmoow/data/remote/model/news_stats_remote_model.dart';
 import 'package:filmoow/data/remote/model/recommended_content_remote_model.dart';
 import 'package:filmoow/data/remote/model/series_remote_model.dart';
 import 'package:filmoow/data/remote/model/tv_show_remote_model.dart';
+import 'package:domain/model/content_classification.dart';
+import 'package:domain/model/seen_status.dart';
 
 extension MovieDomainToRemoteMapper on MovieRemoteModel {
   Movie toDomain() => Movie(
@@ -95,7 +97,9 @@ extension ContentDetailToDomain on ContentDetailRemoteModel {
         generalScore: generalScore,
         userScore: userScore,
         scoreQuantity: scoreQuantity,
-        movieClassification: classification,
+        releaseYear: releaseYear,
+        seenStatus: seenStatus.toSeenStatusDomain(),
+        movieClassification: classification.toMovieClassificationDomain(),
         actorList: actors
             .map(
               (actor) => actor.toDomain(),
@@ -127,4 +131,57 @@ extension RecommendedContentToDomain on RecommendedContentRemoteModel {
         name: name,
         imageUrl: imageUrl,
       );
+}
+
+extension ContentClassificationToDomain on String? {
+  ContentClassification toMovieClassificationDomain() {
+    ContentClassification classification;
+
+    switch (this) {
+      case 'L - Livre para todos os públicos':
+        classification = ContentClassification.L;
+        break;
+      case '10 - Não recomendado para menores de 10 anos':
+        classification = ContentClassification.ten;
+        break;
+      case '12 - Não recomendado para menores de 12 anos':
+        classification = ContentClassification.twelve;
+        break;
+      case '14 - Não recomendado para menores de 14 anos':
+        classification = ContentClassification.fourteen;
+        break;
+      case '16 - Não recomendado para menores de 16 anos':
+        classification = ContentClassification.sixteen;
+        break;
+      case '18 - Não recomendado para menores de 18 anos':
+        classification = ContentClassification.eighteen;
+        break;
+      default:
+        classification = ContentClassification.none;
+        break;
+    }
+    return classification;
+  }
+}
+
+extension SeenStatusToDomain on String {
+  SeenStatus toSeenStatusDomain() {
+    SeenStatus seenStatus;
+
+    switch (this) {
+      case 'WantToSee':
+        seenStatus = SeenStatus.wantToSee;
+        break;
+      case 'Seen':
+        seenStatus = SeenStatus.seen;
+        break;
+      case 'NotSeen':
+        seenStatus = SeenStatus.notSeen;
+        break;
+      default:
+        seenStatus = SeenStatus.none;
+        break;
+    }
+    return seenStatus;
+  }
 }

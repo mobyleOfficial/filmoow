@@ -1,5 +1,7 @@
 import 'package:domain/model/actor.dart';
+import 'package:domain/model/content_classification.dart';
 import 'package:domain/model/recommended_content.dart';
+import 'package:domain/model/seen_status.dart';
 
 class ContentDetail {
   const ContentDetail({
@@ -11,10 +13,12 @@ class ContentDetail {
     required this.coverImages,
     required this.actorList,
     required this.recommendedContent,
+    required this.movieClassification,
+    required this.releaseYear,
+    required this.seenStatus,
     this.generalScore,
     this.userScore,
     this.scoreQuantity,
-    this.movieClassification,
   });
 
   final String title;
@@ -29,9 +33,13 @@ class ContentDetail {
 
   final int? scoreQuantity;
 
-  final String? movieClassification;
+  final ContentClassification movieClassification;
 
   final String duration;
+
+  final int releaseYear;
+
+  final SeenStatus seenStatus;
 
   final List<String> genres;
 

@@ -1,10 +1,17 @@
+import 'dart:ui';
+
 import 'package:domain/model/actor.dart';
+import 'package:domain/model/content_classification.dart';
 import 'package:domain/model/content_detail.dart';
 import 'package:domain/model/recommended_content.dart';
 import 'package:filmoow/infrastructure/routes/route_name_builder.dart';
+import 'package:filmoow/presentation/common/filmoow_assets.dart';
 import 'package:filmoow/presentation/common/remote_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:domain/model/seen_status.dart';
 
 class ContentDetailPage extends StatelessWidget {
   const ContentDetailPage({
@@ -30,9 +37,6 @@ class ContentDetailPage extends StatelessWidget {
                   children: [
                     _CoverImage(
                       coverImage: contentDetail.coverImages.first,
-                      userScore: contentDetail.userScore,
-                      generalScore: contentDetail.generalScore,
-                      scoreQuantity: contentDetail.scoreQuantity,
                     ),
                     _ContentDetailBody(
                       title: contentDetail.title,
@@ -42,6 +46,12 @@ class ContentDetailPage extends StatelessWidget {
                       genres: contentDetail.genres,
                       actorList: contentDetail.actorList,
                       recommendedContent: contentDetail.recommendedContent,
+                      classification: contentDetail.movieClassification,
+                      userScore: contentDetail.userScore,
+                      generalScore: contentDetail.generalScore,
+                      scoreQuantity: contentDetail.scoreQuantity,
+                      releaseYear: contentDetail.releaseYear,
+                      seenStatus: contentDetail.seenStatus,
                     ),
                   ],
                 ),
@@ -55,84 +65,47 @@ class ContentDetailPage extends StatelessWidget {
 class _CoverImage extends StatelessWidget {
   const _CoverImage({
     required this.coverImage,
-    required this.generalScore,
-    required this.userScore,
-    required this.scoreQuantity,
     Key? key,
   }) : super(key: key);
 
   final String coverImage;
-  final double? generalScore;
-  final double? userScore;
-  final int? scoreQuantity;
 
   @override
   Widget build(BuildContext context) => Stack(
         children: [
           SizedBox(
-            height: 250,
+            height: 200,
             width: MediaQuery.of(context).size.width,
             child: RemoteImage(
               imageUrl: coverImage,
             ),
           ),
-          Positioned(
-            bottom: 0,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 30,
-              ),
-              child: SizedBox(
-                height: 90,
-                width: MediaQuery.of(context).size.width,
+          SizedBox(
+            height: 200,
+            width: MediaQuery.of(context).size.width,
+            child: ClipRRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: 3,
+                  sigmaY: 3,
+                ),
                 child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      bottomLeft: Radius.circular(40),
-                    ),
-                  ),
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      Center(
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: Colors.yellow,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(5),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: Text(
-                              generalScore?.toString() ?? 'none',
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Center(
-                        child: Text(
-                          userScore?.toString() ?? 'none',
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Center(
-                        child: Text(
-                          scoreQuantity?.toString() ?? 'none',
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                    ],
-                  ),
+                  color: Colors.grey.withOpacity(0.1),
+                  alignment: Alignment.center,
+                ),
+              ),
+            ),
+          ),
+          Center(
+            child: SizedBox(
+              height: 220,
+              width: 150,
+              child: Material(
+                elevation: 10,
+                shadowColor: Colors.black,
+                child: RemoteImage(
+                  fit: BoxFit.fill,
+                  imageUrl: coverImage,
                 ),
               ),
             ),
@@ -150,6 +123,12 @@ class _ContentDetailBody extends StatelessWidget {
     required this.genres,
     required this.actorList,
     required this.recommendedContent,
+    required this.classification,
+    required this.generalScore,
+    required this.userScore,
+    required this.scoreQuantity,
+    required this.releaseYear,
+    required this.seenStatus,
     Key? key,
   }) : super(key: key);
 
@@ -160,6 +139,12 @@ class _ContentDetailBody extends StatelessWidget {
   final List<String> genres;
   final List<Actor> actorList;
   final List<RecommendedContent> recommendedContent;
+  final ContentClassification classification;
+  final double? generalScore;
+  final double? userScore;
+  final int? scoreQuantity;
+  final int releaseYear;
+  final SeenStatus seenStatus;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -192,17 +177,116 @@ class _ContentDetailBody extends StatelessWidget {
                       color: Colors.black54,
                     ),
                   ),
+                  const SizedBox(
+                    width: 10,
+                    height: 10,
+                  ),
                   Wrap(
                     children: [
-                      const Text('2019'),
-                      const Text('L'),
+                      Text(
+                        releaseYear.toString(),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black54,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                        height: 10,
+                      ),
                       Text(
                         duration,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black54,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                        height: 10,
+                      ),
+                      SvgPicture.asset(
+                        _getClassificationAsset(
+                          classification,
+                        ),
+                        width: 20,
+                        height: 20,
+                        matchTextDirection: true,
                       ),
                     ],
                   ),
                 ],
               ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 10,
+              left: 10,
+              right: 10,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const FaIcon(
+                          FontAwesomeIcons.solidStar,
+                          color: Colors.yellow,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          generalScore?.toString() ?? 'N/A',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black87,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      scoreQuantity?.toString() ?? 'N/A',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black54,
+                        fontSize: 12,
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    const FaIcon(
+                      FontAwesomeIcons.solidStar,
+                      color: Colors.yellow,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      ((userScore ?? 0) / 2).toString(),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black87,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
+                ),
+                _SeenStatus(
+                  seenStatus: seenStatus,
+                ),
+              ],
             ),
           ),
           if (genres.isNotEmpty)
@@ -282,6 +366,35 @@ class _ContentDetailBody extends StatelessWidget {
             ),
         ],
       );
+
+  String _getClassificationAsset(ContentClassification classification) {
+    String assetName;
+    switch (classification) {
+      case ContentClassification.L:
+        assetName = FilmoowAssets.getLClassification();
+        break;
+      case ContentClassification.ten:
+        assetName = FilmoowAssets.getTenClassification();
+        break;
+      case ContentClassification.twelve:
+        assetName = FilmoowAssets.getTwelveClassification();
+        break;
+      case ContentClassification.fourteen:
+        assetName = FilmoowAssets.getFourteenClassification();
+        break;
+      case ContentClassification.sixteen:
+        assetName = FilmoowAssets.getSixteenClassification();
+        break;
+      case ContentClassification.eighteen:
+        assetName = FilmoowAssets.getEighteenClassification();
+        break;
+      default:
+        assetName = '';
+        break;
+    }
+
+    return assetName;
+  }
 }
 
 class _ActorList extends StatelessWidget {
@@ -418,4 +531,84 @@ class _RecommendedContentList extends StatelessWidget {
           ],
         ),
       );
+}
+
+class _SeenStatus extends StatelessWidget {
+  const _SeenStatus({
+    required this.seenStatus,
+    Key? key,
+  }) : super(key: key);
+
+  final SeenStatus seenStatus;
+
+  @override
+  Widget build(BuildContext context) {
+    if (seenStatus == SeenStatus.seen) {
+      return Row(
+        children: const [
+          FaIcon(
+            FontAwesomeIcons.eye,
+            color: Colors.green,
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Text(
+            'Ja vi!',
+            style: TextStyle(
+              color: Colors.green,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      );
+    }
+
+    if (seenStatus == SeenStatus.notSeen) {
+      return Row(
+        children: const [
+          FaIcon(
+            FontAwesomeIcons.eyeSlash,
+            color: Colors.black54,
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Text(
+            'Não vi!',
+            style: TextStyle(
+              color: Colors.black54,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      );
+    }
+
+    if (seenStatus == SeenStatus.wantToSee) {
+      return Row(
+        children: const [
+          FaIcon(
+            FontAwesomeIcons.plusCircle,
+            color: Colors.black54,
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Text(
+            'Quero ver!',
+            style: TextStyle(
+              color: Colors.black54,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      );
+    }
+
+    return const SizedBox();
+  }
 }

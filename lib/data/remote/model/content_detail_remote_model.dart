@@ -15,6 +15,8 @@ class ContentDetailRemoteModel {
     required this.coverImages,
     required this.actors,
     required this.recommendedContent,
+    required this.releaseYear,
+    required this.seenStatus,
     this.generalScore,
     this.userScore,
     this.scoreQuantity,
@@ -49,6 +51,12 @@ class ContentDetailRemoteModel {
 
   @JsonKey(name: 'duration')
   final String duration;
+
+  @JsonKey(name: 'releaseYear')
+  final int releaseYear;
+
+  @JsonKey(name: 'seenStatus')
+  final String seenStatus;
 
   @JsonKey(name: 'genres')
   final List<String> genres;

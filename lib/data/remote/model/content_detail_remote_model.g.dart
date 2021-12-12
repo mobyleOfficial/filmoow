@@ -23,6 +23,8 @@ ContentDetailRemoteModel _$ContentDetailRemoteModelFromJson(
         .map((e) =>
             RecommendedContentRemoteModel.fromJson(e as Map<String, dynamic>))
         .toList(),
+    releaseYear: json['releaseYear'] as int,
+    seenStatus: json['seenStatus'] as String,
     generalScore: (json['generalScore'] as num?)?.toDouble(),
     userScore: (json['userScore'] as num?)?.toDouble(),
     scoreQuantity: json['scoreQuantity'] as int?,
@@ -41,6 +43,8 @@ Map<String, dynamic> _$ContentDetailRemoteModelToJson(
       'scoreQuantity': instance.scoreQuantity,
       'movieClassification': instance.classification,
       'duration': instance.duration,
+      'releaseYear': instance.releaseYear,
+      'seenStatus': instance.seenStatus,
       'genres': instance.genres,
       'coverImages': instance.coverImages,
       'actors': instance.actors,
