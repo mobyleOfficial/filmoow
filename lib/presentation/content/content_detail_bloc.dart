@@ -49,7 +49,8 @@ class ContentDetailBloc {
     _onSeenStatus.value = StatusLoading();
 
     try {
-      final id = this.id.split('-')[1].replaceAll('t', '').replaceAll('/', '');
+      final id = this.id.split('-').last.replaceAll('t', '').replaceAll('/', '');
+
       await changeSeenStatusUseCase(
         ChangeSeenStatusUseCaseParams(
           id: id,
