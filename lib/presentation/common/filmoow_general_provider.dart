@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:domain/repository/content_repository.dart';
 import 'package:domain/repository/home_repository.dart';
+import 'package:domain/use_case/change_seen_status_use_case.dart';
 import 'package:domain/use_case/get_available_movies_use_case.dart';
+import 'package:domain/use_case/get_content_detail_use_case.dart';
 import 'package:domain/use_case/get_latest_news_use_case.dart';
 import 'package:domain/use_case/get_movies_coming_soon_use_case.dart';
 import 'package:domain/use_case/get_movies_week_premiere_use_case.dart';
@@ -9,7 +11,6 @@ import 'package:domain/use_case/get_popular_list_use_case.dart';
 import 'package:domain/use_case/get_popular_movie_use_case.dart';
 import 'package:domain/use_case/get_popular_series_use_case.dart';
 import 'package:domain/use_case/get_popular_tv_show_use_case.dart';
-import 'package:domain/use_case/get_content_detail_use_case.dart';
 import 'package:filmoow/data/remote/data_source/content/content_remote_data_source.dart';
 import 'package:filmoow/data/remote/data_source/content/content_remote_data_source_impl.dart';
 import 'package:filmoow/data/remote/data_source/home/home_remote_data_source.dart';
@@ -125,6 +126,11 @@ class FilmoowGeneralProvider extends StatelessWidget {
         ),
         ProxyProvider<ContentRepository, GetContentDetailUseCase>(
           update: (_, repository, __) => GetContentDetailUseCase(
+            repository: repository,
+          ),
+        ),
+        ProxyProvider<ContentRepository, ChangeSeenStatusUseCase>(
+          update: (_, repository, __) => ChangeSeenStatusUseCase(
             repository: repository,
           ),
         ),

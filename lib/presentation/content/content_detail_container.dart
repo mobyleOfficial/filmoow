@@ -1,3 +1,4 @@
+import 'package:domain/use_case/change_seen_status_use_case.dart';
 import 'package:domain/use_case/get_content_detail_use_case.dart';
 import 'package:filmoow/presentation/common/async_snapshot_response_view.dart';
 import 'package:filmoow/presentation/content/content_detail_bloc.dart';
@@ -13,17 +14,19 @@ class ContentDetailContainer extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  static Widget create(String id) =>
-      ProxyProvider<GetContentDetailUseCase, ContentDetailBloc>(
+  static Widget create(String id) => ProxyProvider2<GetContentDetailUseCase,
+          ChangeSeenStatusUseCase, ContentDetailBloc>(
         update: (
           context,
           getContentDetailUseCase,
+          changeSeenStatusUseCase,
           bloc,
         ) =>
             bloc ??
             ContentDetailBloc(
               id: id,
               getContentDetailUseCase: getContentDetailUseCase,
+              changeSeenStatusUseCase: changeSeenStatusUseCase,
             ),
         dispose: (_, bloc) => bloc.dispose(),
         child: Consumer<ContentDetailBloc>(
@@ -43,6 +46,8 @@ class ContentDetailContainer extends StatelessWidget {
           snapshot: snapshot,
           successWidgetBuilder: (success) => ContentDetailPage(
             contentDetail: success.contentDetail,
+            changeSeenStatus: bloc.changeSeenStatus,
+            onSeenStatus: bloc.onSeenStatus,
           ),
           errorWidgetBuilder: (error) => Container(
             color: Colors.red,

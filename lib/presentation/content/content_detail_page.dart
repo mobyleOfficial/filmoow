@@ -4,22 +4,28 @@ import 'package:domain/model/actor.dart';
 import 'package:domain/model/content_classification.dart';
 import 'package:domain/model/content_detail.dart';
 import 'package:domain/model/recommended_content.dart';
+import 'package:domain/model/seen_status.dart';
 import 'package:filmoow/infrastructure/routes/route_name_builder.dart';
+import 'package:filmoow/presentation/common/async_snapshot_response_view.dart';
 import 'package:filmoow/presentation/common/filmoow_assets.dart';
 import 'package:filmoow/presentation/common/remote_image.dart';
+import 'package:filmoow/presentation/content/state/seen_status_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:domain/model/seen_status.dart';
 
 class ContentDetailPage extends StatelessWidget {
   const ContentDetailPage({
     required this.contentDetail,
+    required this.changeSeenStatus,
+    required this.onSeenStatus,
     Key? key,
   }) : super(key: key);
 
   final ContentDetail contentDetail;
+  final Function(SeenStatus status) changeSeenStatus;
+  final Stream<SeenStatusState> onSeenStatus;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -27,6 +33,41 @@ class ContentDetailPage extends StatelessWidget {
           title: Text(
             contentDetail.title,
           ),
+          actions: [
+            PopupMenuButton<String>(
+              onSelected: (selected) {
+                late SeenStatus status;
+
+                switch (selected) {
+                  case 'Marcar como visto':
+                    status = SeenStatus.seen;
+                    break;
+
+                  case 'Marcar como NÃO visto':
+                    status = SeenStatus.notSeen;
+                    break;
+
+                  case 'Marcar como quero ver':
+                    status = SeenStatus.wantToSee;
+                    break;
+                }
+
+                changeSeenStatus(status);
+              },
+              itemBuilder: (context) => {
+                'Marcar como visto',
+                'Marcar como NÃO visto',
+                'Marcar como quero ver'
+              }
+                  .map(
+                    (choice) => PopupMenuItem<String>(
+                      value: choice,
+                      child: Text(choice),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ],
         ),
         body: Center(
           child: CustomScrollView(
@@ -51,7 +92,7 @@ class ContentDetailPage extends StatelessWidget {
                       generalScore: contentDetail.generalScore,
                       scoreQuantity: contentDetail.scoreQuantity,
                       releaseYear: contentDetail.releaseYear,
-                      seenStatus: contentDetail.seenStatus,
+                      onSeenStatus: onSeenStatus,
                     ),
                   ],
                 ),
@@ -128,7 +169,7 @@ class _ContentDetailBody extends StatelessWidget {
     required this.userScore,
     required this.scoreQuantity,
     required this.releaseYear,
-    required this.seenStatus,
+    required this.onSeenStatus,
     Key? key,
   }) : super(key: key);
 
@@ -144,7 +185,7 @@ class _ContentDetailBody extends StatelessWidget {
   final double? userScore;
   final int? scoreQuantity;
   final int releaseYear;
-  final SeenStatus seenStatus;
+  final Stream<SeenStatusState> onSeenStatus;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -229,8 +270,18 @@ class _ContentDetailBody extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    const Text(
+                      'Média Geral',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black54,
+                        fontSize: 12,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -255,7 +306,7 @@ class _ContentDetailBody extends StatelessWidget {
                       height: 5,
                     ),
                     Text(
-                      scoreQuantity?.toString() ?? 'N/A',
+                      'Votos: ${scoreQuantity?.toString() ?? 'N/A'}',
                       style: const TextStyle(
                         fontWeight: FontWeight.w400,
                         color: Colors.black54,
@@ -264,27 +315,70 @@ class _ContentDetailBody extends StatelessWidget {
                     )
                   ],
                 ),
-                Row(
+                Column(
                   children: [
-                    const FaIcon(
-                      FontAwesomeIcons.solidStar,
-                      color: Colors.yellow,
+                    const Text(
+                      ' ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black54,
+                        fontSize: 12,
+                      ),
                     ),
                     const SizedBox(
-                      width: 10,
+                      height: 5,
                     ),
-                    Text(
-                      ((userScore ?? 0) / 2).toString(),
-                      style: const TextStyle(
+                    Row(
+                      children: [
+                        const FaIcon(
+                          FontAwesomeIcons.solidStar,
+                          color: Colors.yellow,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          ((userScore ?? 0) / 2).toString(),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black87,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    const Text(
+                      'Sua nota',
+                      style: TextStyle(
                         fontWeight: FontWeight.w400,
-                        color: Colors.black87,
-                        fontSize: 18,
+                        color: Colors.black54,
+                        fontSize: 12,
                       ),
                     ),
                   ],
                 ),
-                _SeenStatus(
-                  seenStatus: seenStatus,
+                Column(
+                  children: [
+                    const Text(
+                      ' ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black54,
+                        fontSize: 12,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Center(
+                      child: _SeenStatus(
+                        onSeenStatus: onSeenStatus,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -535,80 +629,90 @@ class _RecommendedContentList extends StatelessWidget {
 
 class _SeenStatus extends StatelessWidget {
   const _SeenStatus({
-    required this.seenStatus,
+    required this.onSeenStatus,
     Key? key,
   }) : super(key: key);
 
-  final SeenStatus seenStatus;
+  final Stream<SeenStatusState> onSeenStatus;
 
   @override
-  Widget build(BuildContext context) {
-    if (seenStatus == SeenStatus.seen) {
-      return Row(
-        children: const [
-          FaIcon(
-            FontAwesomeIcons.eye,
-            color: Colors.green,
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Text(
-            'Ja vi!',
-            style: TextStyle(
-              color: Colors.green,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      );
-    }
+  Widget build(BuildContext context) => StreamBuilder(
+        stream: onSeenStatus,
+        builder: (_, snapshot) =>
+            AsyncSnapshotResponseView<StatusLoading, StatusSuccess, StatusError>(
+          snapshot: snapshot,
+          successWidgetBuilder: (success) {
+            final seenStatus = success.status;
 
-    if (seenStatus == SeenStatus.notSeen) {
-      return Row(
-        children: const [
-          FaIcon(
-            FontAwesomeIcons.eyeSlash,
-            color: Colors.black54,
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Text(
-            'Não vi!',
-            style: TextStyle(
-              color: Colors.black54,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      );
-    }
+            if (seenStatus == SeenStatus.seen) {
+              return Row(
+                children: const [
+                  FaIcon(
+                    FontAwesomeIcons.eye,
+                    color: Colors.green,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Ja vi!',
+                    style: TextStyle(
+                      color: Colors.green,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              );
+            }
 
-    if (seenStatus == SeenStatus.wantToSee) {
-      return Row(
-        children: const [
-          FaIcon(
-            FontAwesomeIcons.plusCircle,
-            color: Colors.black54,
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Text(
-            'Quero ver!',
-            style: TextStyle(
-              color: Colors.black54,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      );
-    }
+            if (seenStatus == SeenStatus.notSeen) {
+              return Row(
+                children: const [
+                  FaIcon(
+                    FontAwesomeIcons.eyeSlash,
+                    color: Colors.black54,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Não vi!',
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              );
+            }
 
-    return const SizedBox();
-  }
+            if (seenStatus == SeenStatus.wantToSee) {
+              return Row(
+                children: const [
+                  FaIcon(
+                    FontAwesomeIcons.clock,
+                    color: Colors.black54,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Quero ver!',
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              );
+            }
+
+            return const SizedBox();
+          },
+          errorWidgetBuilder: (_) => const SizedBox(),
+        ),
+      );
 }
