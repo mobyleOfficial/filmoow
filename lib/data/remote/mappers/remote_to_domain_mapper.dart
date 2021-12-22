@@ -1,13 +1,15 @@
 import 'package:domain/model/actor.dart';
+import 'package:domain/model/content_classification.dart';
 import 'package:domain/model/content_detail.dart';
 import 'package:domain/model/content_list.dart';
 import 'package:domain/model/content_list_stats.dart';
 import 'package:domain/model/movie.dart';
 import 'package:domain/model/news.dart';
 import 'package:domain/model/news_stats.dart';
+import 'package:domain/model/recommended_content.dart';
+import 'package:domain/model/seen_status.dart';
 import 'package:domain/model/series.dart';
 import 'package:domain/model/tv_show.dart';
-import 'package:domain/model/recommended_content.dart';
 import 'package:filmoow/data/remote/model/actor_remote_model.dart';
 import 'package:filmoow/data/remote/model/content_detail_remote_model.dart';
 import 'package:filmoow/data/remote/model/content_list_remote_model.dart';
@@ -18,8 +20,6 @@ import 'package:filmoow/data/remote/model/news_stats_remote_model.dart';
 import 'package:filmoow/data/remote/model/recommended_content_remote_model.dart';
 import 'package:filmoow/data/remote/model/series_remote_model.dart';
 import 'package:filmoow/data/remote/model/tv_show_remote_model.dart';
-import 'package:domain/model/content_classification.dart';
-import 'package:domain/model/seen_status.dart';
 
 extension MovieDomainToRemoteMapper on MovieRemoteModel {
   Movie toDomain() => Movie(

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:domain/repository/auth_repository.dart';
 import 'package:domain/repository/content_repository.dart';
 import 'package:domain/repository/home_repository.dart';
 import 'package:domain/use_case/change_seen_status_use_case.dart';
@@ -11,19 +12,27 @@ import 'package:domain/use_case/get_popular_list_use_case.dart';
 import 'package:domain/use_case/get_popular_movie_use_case.dart';
 import 'package:domain/use_case/get_popular_series_use_case.dart';
 import 'package:domain/use_case/get_popular_tv_show_use_case.dart';
+import 'package:domain/use_case/sign_in_use_case.dart';
+import 'package:filmoow/data/local/secure/auth/auth_secure_data_source.dart';
+import 'package:filmoow/data/local/secure/auth/auth_secure_data_source_impl.dart';
 import 'package:filmoow/data/remote/data_source/content/content_remote_data_source.dart';
 import 'package:filmoow/data/remote/data_source/content/content_remote_data_source_impl.dart';
 import 'package:filmoow/data/remote/data_source/home/home_remote_data_source.dart';
 import 'package:filmoow/data/remote/data_source/home/home_remote_data_source_impl.dart';
+import 'package:filmoow/data/repository/auth_repository_impl.dart';
 import 'package:filmoow/data/repository/content_repository_impl.dart';
 import 'package:filmoow/data/repository/home_repository_impl.dart';
+import 'package:filmoow/infrastructure/remote/auth_interceptor.dart';
 import 'package:filmoow/infrastructure/remote/custom_dio.dart';
 import 'package:filmoow/infrastructure/routes/route_name_builder.dart';
 import 'package:filmoow/presentation/content/content_detail_container.dart';
 import 'package:filmoow/presentation/home/home_container.dart';
 import 'package:filmoow/presentation/main/main_screen.dart';
+import 'package:filmoow/presentation/profile/sign_in/sign_in_container.dart';
+import 'package:filmoow/presentation/profile/user_info/user_info_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -38,6 +47,10 @@ class FilmoowGeneralProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MultiProvider(
         providers: [
+          Provider<FlutterSecureStorage>(
+            create: (_) => const FlutterSecureStorage(),
+          ),
+          ..._buildSecureDataSourceProviders(),
           _buildDioProvider(),
           ..._buildRouteFactory(),
           ..._buildRemoteDataSourceProviders(),
@@ -47,13 +60,27 @@ class FilmoowGeneralProvider extends StatelessWidget {
         child: builder(context),
       );
 
-  SingleChildWidget _buildDioProvider() => Provider<Dio>(
-        create: (_) {
+  List<SingleChildWidget> _buildSecureDataSourceProviders() => [
+        ProxyProvider<FlutterSecureStorage, AuthSecureDataSource>(
+          update: (_, dataSource, __) => AuthSecureDataSourceImpl(
+            dataSource,
+          ),
+        ),
+      ];
+
+  SingleChildWidget _buildDioProvider() =>
+      ProxyProvider<AuthSecureDataSource, Dio>(
+        update: (_, authSecureDataSource, __) {
           BaseOptions options = BaseOptions(
             baseUrl: 'http://192.168.56.1:8080',
           );
 
-          return CustomDio(options);
+          return CustomDio(options)
+            ..interceptors.add(
+              AuthInterceptor(
+                authSecureDataSource,
+              ),
+            );
         },
       );
 
@@ -79,6 +106,11 @@ class FilmoowGeneralProvider extends StatelessWidget {
         ProxyProvider<ContentRemoteDataSource, ContentRepository>(
           update: (_, remoteDataSource, __) => ContentRepositoryImpl(
             dataSource: remoteDataSource,
+          ),
+        ),
+        ProxyProvider<AuthSecureDataSource, AuthRepository>(
+          update: (_, secureDataSource, __) => AuthRepositoryImpl(
+            secureDataSource: secureDataSource,
           ),
         ),
       ];
@@ -134,6 +166,11 @@ class FilmoowGeneralProvider extends StatelessWidget {
             repository: repository,
           ),
         ),
+        ProxyProvider<AuthRepository, SignInUseCase>(
+          update: (_, repository, __) => SignInUseCase(
+            repository: repository,
+          ),
+        ),
       ];
 
   List<SingleChildWidget> _buildRouteFactory() => [
@@ -180,12 +217,10 @@ class FilmoowGeneralProvider extends StatelessWidget {
               );
             }
 
-            if (settings.name == RouteNameBuilder.getUserRoute()) {
+            if (settings.name == RouteNameBuilder.getProfileRoute()) {
               return MaterialPageRoute(
                 settings: settings,
-                builder: (_) => const Scaffold(
-                  body: Text('USERS'),
-                ),
+                builder: (_) => UserInfoContainer.create(),
               );
             }
 
@@ -195,6 +230,13 @@ class FilmoowGeneralProvider extends StatelessWidget {
               return MaterialPageRoute(
                 settings: settings,
                 builder: (_) => ContentDetailContainer.create(id),
+              );
+            }
+
+            if (settings.name == RouteNameBuilder.getLoginRoute()) {
+              return MaterialPageRoute(
+                settings: settings,
+                builder: (_) => SignInContainer.create(),
               );
             }
 

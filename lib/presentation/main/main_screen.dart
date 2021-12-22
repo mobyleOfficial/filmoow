@@ -3,6 +3,7 @@ import 'package:filmoow/presentation/common/bottom_navigation/bottom_navigation_
 import 'package:filmoow/presentation/common/bottom_navigation/bottom_navigation_tab.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({
@@ -99,21 +100,23 @@ class _MainScreenState extends State<MainScreen> {
 
       BottomNavigationTab(
         bottomNavigationBarItem: const BottomNavigationBarItem(
-          label: 'POKÉMON LIST',
+          label: 'Perfil',
           activeIcon: IconTheme(
             data: IconThemeData(
               color: Colors.black,
             ),
-            child: Icon(
-              Icons.home_filled,
+            child: FaIcon(
+              FontAwesomeIcons.solidUserCircle,
+              color: Colors.black,
             ),
           ),
-          icon: Icon(
-            Icons.home_outlined,
+          icon: FaIcon(
+            FontAwesomeIcons.userCircle,
+            color: Colors.grey,
           ),
         ),
         navigatorKey: GlobalKey<NavigatorState>(),
-        initialRouteName: RouteNameBuilder.getUserRoute(),
+        initialRouteName: RouteNameBuilder.getProfileRoute(),
       ),
 
     ];
