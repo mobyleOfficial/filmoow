@@ -1,64 +1,81 @@
+import 'package:filmoow/infrastructure/routes/route_name_builder.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class SignInPage extends StatefulWidget {
+class SignInPage extends StatelessWidget {
   const SignInPage({
-    required this.showLoading,
-    required this.dismissLoading,
+    required this.signIn,
     Key? key,
   }) : super(key: key);
 
-  final VoidCallback showLoading;
-  final VoidCallback dismissLoading;
+  final ValueChanged<String> signIn;
 
   @override
-  State<StatefulWidget> createState() => SignInPageState();
-}
-
-class SignInPageState extends State<SignInPage> {
-  late InAppWebViewController _controller;
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        key: scaffoldKey,
-        body: InAppWebView(
-          initialUrlRequest: URLRequest(
-            url: Uri.parse(
-              'https://filmow.com/login/',
-            ),
-          ),
-          onWebViewCreated: (controller) {
-            _controller = controller;
-          },
-          onProgressChanged: (controller, progress) {
-            final p = progress;
-            final c = controller;
-
-            if(p == 100) {
-              widget.dismissLoading();
-            } else {
-              widget.showLoading();
-            }
-          },
-          onLoadStop: (controller, url) async {
-            if (url?.path.contains('/usuarios') ?? false) {
-              // or using CookieManager
-              CookieManager cookieManager = CookieManager.instance();
-              Cookie? token = await cookieManager.getCookie(
-                url: Uri.parse(
-                  'https://filmow.com/',
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.all(
+          24,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Column(
+              children: const [
+                FaIcon(
+                  FontAwesomeIcons.film,
+                  color: Colors.black,
                 ),
-                name: 'filmow_sessionid',
-              );
+                Text(
+                  'Bem-vindo',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                const Text('Escolha o método de acesso'),
+                TextButton(
+                  onPressed: () async {
+                    final token =
+                        await Navigator.of(context, rootNavigator: true)
+                            .pushNamed(
+                      RouteNameBuilder.getFilmowSignInRoute(),
+                    );
 
-              final myContext = scaffoldKey.currentContext;
-
-              if (myContext != null) {
-                Navigator.pop(myContext, token?.value ?? '');
-              }
-            }
-          },
+                    if (token != null) {
+                      signIn(token as String);
+                    }
+                  },
+                  child: const Text(
+                    'Entrar com Filmow',
+                  ),
+                ),
+                const Text('- Ou -'),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text('Entrar com Facebook ou Twitter'),
+                ),
+                const Text('- Ou -'),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text('Cadastre-se'),
+                ),
+              ],
+            ),
+            const Text(
+              'Esse app não é afiliado ao Filmow. Todas as informações '
+              'aqui contidas são oriundas e de responsabilidade do Filmow.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
       );
 }

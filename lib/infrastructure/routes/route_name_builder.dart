@@ -6,7 +6,8 @@ class RouteNameBuilder {
   static const _newsRoute = 'news';
   static const _profileRoute = 'profile';
   static const _contentDetailRoute = 'contentDetail';
-  static const _loginRoute = 'login';
+  static const _filmowSignInRoute = 'filmowSignIn';
+  static const _signInRoute = 'signIn';
 
   static String getInitialRoute() => _initialRoute;
   static String getHomeRoute() => _homeRoute;
@@ -15,5 +16,6 @@ class RouteNameBuilder {
   static String getNewsRoute() => _newsRoute;
   static String getProfileRoute() => _profileRoute;
   static String getContentDetailRoute() => _contentDetailRoute;
-  static String getLoginRoute() => _loginRoute;
+  static String getFilmowSignInRoute() => _filmowSignInRoute;
+  static String getSignInRoute() => _signInRoute;
 }

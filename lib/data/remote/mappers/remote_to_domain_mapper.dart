@@ -10,6 +10,8 @@ import 'package:domain/model/recommended_content.dart';
 import 'package:domain/model/seen_status.dart';
 import 'package:domain/model/series.dart';
 import 'package:domain/model/tv_show.dart';
+import 'package:domain/model/user_information.dart';
+import 'package:domain/model/watched_time.dart';
 import 'package:filmoow/data/remote/model/actor_remote_model.dart';
 import 'package:filmoow/data/remote/model/content_detail_remote_model.dart';
 import 'package:filmoow/data/remote/model/content_list_remote_model.dart';
@@ -20,6 +22,7 @@ import 'package:filmoow/data/remote/model/news_stats_remote_model.dart';
 import 'package:filmoow/data/remote/model/recommended_content_remote_model.dart';
 import 'package:filmoow/data/remote/model/series_remote_model.dart';
 import 'package:filmoow/data/remote/model/tv_show_remote_model.dart';
+import 'package:filmoow/data/remote/model/user_information_remote_model.dart';
 
 extension MovieDomainToRemoteMapper on MovieRemoteModel {
   Movie toDomain() => Movie(
@@ -184,4 +187,35 @@ extension SeenStatusToDomain on String {
     }
     return seenStatus;
   }
+}
+
+extension TimeSpentToWatchedTime on String {
+  WatchedTime toWatchedTime() {
+    final splitDays = split('d');
+    final days = splitDays[0];
+
+    final splitHours = splitDays[1].split('h');
+    final hours = splitHours[0];
+
+    final splitMinutes = splitHours[1].split('min');
+    final minutes = splitMinutes[0];
+
+    return WatchedTime(
+      days: days,
+      hours: hours,
+      minutes: minutes,
+    );
+  }
+}
+
+extension UserInformationRemoteToDomain on UserInformationRemoteModel {
+  UserInformation toDomain() => UserInformation(
+        name: name,
+        userName: userName,
+        imageUrl: imageUrl,
+        watchedTime: timeSpent.toWatchedTime(),
+        seenNumber: seenNumber,
+        commentNumber: commentNumber,
+        listNumber: listNumber,
+      );
 }
