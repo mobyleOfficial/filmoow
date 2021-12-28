@@ -1,6 +1,7 @@
 import 'package:domain/model/content_list.dart';
 import 'package:domain/model/movie.dart';
 import 'package:domain/model/news.dart';
+import 'package:domain/model/seen_status.dart';
 import 'package:domain/model/series.dart';
 import 'package:domain/model/tv_show.dart';
 import 'package:filmoow/presentation/common/cards/content_card.dart';
@@ -60,12 +61,14 @@ class HomePage extends StatelessWidget {
                         score: popularMovieList[index].score,
                         commentsQuantity:
                             popularMovieList[index].commentsQuantity,
+                        seenStatus: popularMovieList[index].status,
                       ),
                     ),
                   ),
+                  onTap: () {},
                 ),
                 _ContentFrame(
-                  title: 'Sériess populares',
+                  title: 'Séries populares',
                   child: SizedBox(
                     height: 390,
                     child: ListView.builder(
@@ -81,9 +84,11 @@ class HomePage extends StatelessWidget {
                         score: popularSeriesList[index].score,
                         commentsQuantity:
                             popularSeriesList[index].commentsQuantity,
+                        seenStatus: SeenStatus.notSeen,
                       ),
                     ),
                   ),
+                  onTap: () {},
                 ),
                 _ContentFrame(
                   title: 'Últimas noticias',
@@ -104,6 +109,7 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                   ),
+                  onTap: () {},
                 ),
                 _ContentFrame(
                   title: 'Estreias da semana',
@@ -122,9 +128,11 @@ class HomePage extends StatelessWidget {
                         score: weekPremiereMovieList[index].score,
                         commentsQuantity:
                             weekPremiereMovieList[index].commentsQuantity,
+                        seenStatus: weekPremiereMovieList[index].status,
                       ),
                     ),
                   ),
+                  onTap: () {},
                 ),
                 _ContentFrame(
                   title: 'Em breve',
@@ -143,9 +151,11 @@ class HomePage extends StatelessWidget {
                         score: comingSoonMovieList[index].score,
                         commentsQuantity:
                             comingSoonMovieList[index].commentsQuantity,
+                        seenStatus: comingSoonMovieList[index].status,
                       ),
                     ),
                   ),
+                  onTap: () {},
                 ),
                 _ContentFrame(
                   title: 'Listas populares da semana',
@@ -167,6 +177,7 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                   ),
+                  onTap: () {},
                 ),
                 _ContentFrame(
                   title: 'Em cartaz',
@@ -185,9 +196,11 @@ class HomePage extends StatelessWidget {
                         score: availableMovieList[index].score,
                         commentsQuantity:
                             availableMovieList[index].commentsQuantity,
+                        seenStatus: availableMovieList[index].status,
                       ),
                     ),
                   ),
+                  onTap: () {},
                 ),
                 _ContentFrame(
                   title: 'Shows de TV',
@@ -206,9 +219,11 @@ class HomePage extends StatelessWidget {
                         score: popularTvShowList[index].score,
                         commentsQuantity:
                             popularTvShowList[index].commentsQuantity,
+                        seenStatus: SeenStatus.notSeen,
                       ),
                     ),
                   ),
+                  onTap: () {},
                 ),
               ],
             ),
@@ -221,11 +236,13 @@ class _ContentFrame extends StatelessWidget {
   const _ContentFrame({
     required this.title,
     required this.child,
+    required this.onTap,
     Key? key,
   }) : super(key: key);
 
   final String title;
   final Widget child;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -241,21 +258,24 @@ class _ContentFrame extends StatelessWidget {
                 top: 8,
                 bottom: 16,
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      color: Colors.black87,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+              child: InkWell(
+                onTap: onTap,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        color: Colors.black87,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  const FaIcon(
-                    FontAwesomeIcons.chevronRight,
-                  ),
-                ],
+                    const FaIcon(
+                      FontAwesomeIcons.chevronRight,
+                    ),
+                  ],
+                ),
               ),
             ),
             child,

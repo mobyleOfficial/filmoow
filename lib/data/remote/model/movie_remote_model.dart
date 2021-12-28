@@ -10,6 +10,7 @@ class MovieRemoteModel {
     required this.imageUrl,
     this.score,
     this.commentsQuantity,
+    this.seenStatus,
   });
 
   factory MovieRemoteModel.fromJson(Map<String, dynamic> parsedJson) =>
@@ -31,4 +32,7 @@ class MovieRemoteModel {
 
   @JsonKey(name: 'commentsQuantity')
   final int? commentsQuantity;
+
+  @JsonKey(name: 'seenStatus')
+  final String? seenStatus;
 }

@@ -1,5 +1,7 @@
+import 'package:domain/model/seen_status.dart';
 import 'package:filmoow/infrastructure/routes/route_name_builder.dart';
 import 'package:filmoow/presentation/common/remote_image.dart';
+import 'package:filmoow/presentation/common/sizes.dart';
 import 'package:flutter/material.dart';
 
 class ContentCard extends StatelessWidget {
@@ -8,6 +10,7 @@ class ContentCard extends StatelessWidget {
     required this.name,
     required this.imageUrl,
     required this.isLast,
+    required this.seenStatus,
     this.commentsQuantity,
     this.score,
     Key? key,
@@ -19,6 +22,7 @@ class ContentCard extends StatelessWidget {
   final bool isLast;
   final int? commentsQuantity;
   final double? score;
+  final SeenStatus seenStatus;
 
   @override
   Widget build(BuildContext context) => InkWell(
@@ -104,6 +108,30 @@ class ContentCard extends StatelessWidget {
                   ],
                 ),
               ),
+              if (seenStatus != SeenStatus.notSeen)
+                Positioned(
+                  bottom: 80,
+                  child: Container(
+                    width: 200,
+                    height: 30,
+                    color: seenStatus == SeenStatus.seen
+                        ? Colors.green.withOpacity(0.9)
+                        : Colors.yellow.withOpacity(0.9),
+                    child: Padding(
+                      padding: const EdgeInsets.all(
+                        Sizes.dp8,
+                      ),
+                      child: Center(
+                        child: Text(
+                          seenStatus == SeenStatus.seen ? 'Visto' : 'Quero ver',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
             ],
           ),
         ),

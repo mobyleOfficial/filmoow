@@ -13,6 +13,7 @@ MovieRemoteModel _$MovieRemoteModelFromJson(Map<String, dynamic> json) {
     imageUrl: json['image'] as String,
     score: (json['score'] as num?)?.toDouble(),
     commentsQuantity: json['commentsQuantity'] as int?,
+    seenStatus: json['seenStatus'] as String?,
   );
 }
 
@@ -23,4 +24,5 @@ Map<String, dynamic> _$MovieRemoteModelToJson(MovieRemoteModel instance) =>
       'image': instance.imageUrl,
       'score': instance.score,
       'commentsQuantity': instance.commentsQuantity,
+      'seenStatus': instance.seenStatus,
     };

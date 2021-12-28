@@ -31,6 +31,7 @@ extension MovieDomainToRemoteMapper on MovieRemoteModel {
         imageUrl: imageUrl,
         score: score,
         commentsQuantity: commentsQuantity,
+        status: seenStatus?.toSeenStatusDomain() ?? SeenStatus.notSeen,
       );
 }
 
