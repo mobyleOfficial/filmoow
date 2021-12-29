@@ -45,9 +45,9 @@ class ProfilePage extends StatelessWidget {
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.only(
-                top: Sizes.dp10,
-                left: Sizes.dp10,
-                right: Sizes.dp10,
+                top: Sizes.dp12,
+                left: Sizes.dp12,
+                right: Sizes.dp12,
               ),
               child: Column(
                 children: [
@@ -61,7 +61,7 @@ class ProfilePage extends StatelessWidget {
                   Text(userInformation.name),
                   Text(userInformation.userName),
                   const SizedBox(
-                    height: Sizes.dp10,
+                    height: Sizes.dp12,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -90,7 +90,7 @@ class ProfilePage extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(
-                    height: Sizes.dp10,
+                    height: Sizes.dp12,
                   ),
                   Wrap(
                     children: [
@@ -112,7 +112,7 @@ class ProfilePage extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(
-                    height: Sizes.dp10,
+                    height: Sizes.dp12,
                   ),
                   ListView(
                     physics: const NeverScrollableScrollPhysics(),

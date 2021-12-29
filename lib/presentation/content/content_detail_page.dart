@@ -9,6 +9,7 @@ import 'package:filmoow/infrastructure/routes/route_name_builder.dart';
 import 'package:filmoow/presentation/common/async_snapshot_response_view.dart';
 import 'package:filmoow/presentation/common/filmoow_assets.dart';
 import 'package:filmoow/presentation/common/remote_image.dart';
+import 'package:filmoow/presentation/common/sizes.dart';
 import 'package:filmoow/presentation/content/state/seen_status_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -115,14 +116,14 @@ class _CoverImage extends StatelessWidget {
   Widget build(BuildContext context) => Stack(
         children: [
           SizedBox(
-            height: 200,
+            height: Sizes.dp200,
             width: MediaQuery.of(context).size.width,
             child: RemoteImage(
               imageUrl: coverImage,
             ),
           ),
           SizedBox(
-            height: 200,
+            height: Sizes.dp200,
             width: MediaQuery.of(context).size.width,
             child: ClipRRect(
               child: BackdropFilter(
@@ -139,8 +140,8 @@ class _CoverImage extends StatelessWidget {
           ),
           Center(
             child: SizedBox(
-              height: 220,
-              width: 150,
+              height: Sizes.dp220,
+              width: Sizes.dp160,
               child: Material(
                 elevation: 10,
                 shadowColor: Colors.black,
@@ -219,8 +220,8 @@ class _ContentDetailBody extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(
-                    width: 10,
-                    height: 10,
+                    width: Sizes.dp12,
+                    height: Sizes.dp12,
                   ),
                   Wrap(
                     children: [
@@ -232,8 +233,8 @@ class _ContentDetailBody extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(
-                        width: 10,
-                        height: 10,
+                        width: Sizes.dp12,
+                        height: Sizes.dp12,
                       ),
                       Text(
                         duration,
@@ -243,8 +244,8 @@ class _ContentDetailBody extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(
-                        width: 10,
-                        height: 10,
+                        width: Sizes.dp12,
+                        height: Sizes.dp12,
                       ),
                       SvgPicture.asset(
                         _getClassificationAsset(
@@ -280,7 +281,7 @@ class _ContentDetailBody extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(
-                      height: 5,
+                      height: Sizes.dp4,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -290,7 +291,7 @@ class _ContentDetailBody extends StatelessWidget {
                           color: Colors.yellow,
                         ),
                         const SizedBox(
-                          width: 10,
+                          width: Sizes.dp12,
                         ),
                         Text(
                           generalScore?.toString() ?? 'N/A',
@@ -303,7 +304,7 @@ class _ContentDetailBody extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(
-                      height: 5,
+                      height: Sizes.dp4,
                     ),
                     Text(
                       'Votos: ${scoreQuantity?.toString() ?? 'N/A'}',
@@ -326,7 +327,7 @@ class _ContentDetailBody extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(
-                      height: 5,
+                      height: Sizes.dp4,
                     ),
                     Row(
                       children: [
@@ -335,7 +336,7 @@ class _ContentDetailBody extends StatelessWidget {
                           color: Colors.yellow,
                         ),
                         const SizedBox(
-                          width: 10,
+                          width: Sizes.dp12,
                         ),
                         Text(
                           ((userScore ?? 0) / 2).toString(),
@@ -348,7 +349,7 @@ class _ContentDetailBody extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(
-                      height: 5,
+                      height: Sizes.dp4,
                     ),
                     const Text(
                       'Sua nota',
@@ -371,7 +372,7 @@ class _ContentDetailBody extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(
-                      height: 5,
+                      height: Sizes.dp4,
                     ),
                     Center(
                       child: _SeenStatus(
@@ -437,7 +438,7 @@ class _ContentDetailBody extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: Sizes.dp12,
                 ),
                 Text(
                   description,
@@ -517,7 +518,7 @@ class _ActorList extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 100,
+              height: Sizes.dp120,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
@@ -591,7 +592,7 @@ class _RecommendedContentList extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 100,
+              height:  Sizes.dp120,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
@@ -638,8 +639,8 @@ class _SeenStatus extends StatelessWidget {
   @override
   Widget build(BuildContext context) => StreamBuilder(
         stream: onSeenStatus,
-        builder: (_, snapshot) =>
-            AsyncSnapshotResponseView<StatusLoading, StatusSuccess, StatusError>(
+        builder: (_, snapshot) => AsyncSnapshotResponseView<StatusLoading,
+            StatusSuccess, StatusError>(
           snapshot: snapshot,
           successWidgetBuilder: (success) {
             final seenStatus = success.status;
@@ -652,7 +653,7 @@ class _SeenStatus extends StatelessWidget {
                     color: Colors.green,
                   ),
                   SizedBox(
-                    width: 10,
+                    width: Sizes.dp12,
                   ),
                   Text(
                     'Ja vi!',
@@ -674,7 +675,7 @@ class _SeenStatus extends StatelessWidget {
                     color: Colors.black54,
                   ),
                   SizedBox(
-                    width: 10,
+                    width: Sizes.dp12,
                   ),
                   Text(
                     'Não vi!',
@@ -696,7 +697,7 @@ class _SeenStatus extends StatelessWidget {
                     color: Colors.black54,
                   ),
                   SizedBox(
-                    width: 10,
+                    width: Sizes.dp12,
                   ),
                   Text(
                     'Quero ver!',
