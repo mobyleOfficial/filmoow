@@ -3,9 +3,9 @@ import 'package:domain/model/comment_listing.dart';
 import 'package:domain/repository/content_repository.dart';
 import 'package:domain/use_case/use_case.dart';
 
-class GetContentCommentsUseCase extends ParametrizedUseCaseImpl<
-    GetContentCommentsUseCaseParams, CommentListing> {
-  GetContentCommentsUseCase({
+class GetCommentListUseCase extends ParametrizedUseCaseImpl<
+    GetCommentListUseCaseParams, CommentListing> {
+  GetCommentListUseCase({
     required this.repository,
   });
 
@@ -13,7 +13,7 @@ class GetContentCommentsUseCase extends ParametrizedUseCaseImpl<
 
   @override
   Future<CommentListing> getRawFuture(
-      {GetContentCommentsUseCaseParams? params}) {
+      {GetCommentListUseCaseParams? params}) {
     if (params != null) {
       return repository.getCommentList(
         params.page,
@@ -25,8 +25,8 @@ class GetContentCommentsUseCase extends ParametrizedUseCaseImpl<
   }
 }
 
-class GetContentCommentsUseCaseParams {
-  const GetContentCommentsUseCaseParams({
+class GetCommentListUseCaseParams {
+  const GetCommentListUseCaseParams({
     required this.page,
     required this.id,
   });

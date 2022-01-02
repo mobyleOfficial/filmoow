@@ -8,6 +8,7 @@ class RouteNameBuilder {
   static const _contentDetailRoute = 'contentDetail';
   static const _filmowSignInRoute = 'filmowSignIn';
   static const _signInRoute = 'signIn';
+  static const _commentListRoute = 'commentList';
 
   static String getInitialRoute() => _initialRoute;
   static String getHomeRoute() => _homeRoute;
@@ -18,4 +19,5 @@ class RouteNameBuilder {
   static String getContentDetailRoute() => _contentDetailRoute;
   static String getFilmowSignInRoute() => _filmowSignInRoute;
   static String getSignInRoute() => _signInRoute;
+  static String getCommentListRoute() => _commentListRoute;
 }

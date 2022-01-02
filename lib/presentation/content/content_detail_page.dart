@@ -8,7 +8,7 @@ import 'package:domain/model/recommended_content.dart';
 import 'package:domain/model/seen_status.dart';
 import 'package:filmoow/infrastructure/routes/route_name_builder.dart';
 import 'package:filmoow/presentation/common/async_snapshot_response_view.dart';
-import 'package:filmoow/presentation/common/comment/comment_card.dart';
+import 'package:filmoow/presentation/common/comment/widget/comment_card.dart';
 import 'package:filmoow/presentation/common/filmoow_assets.dart';
 import 'package:filmoow/presentation/common/remote_image.dart';
 import 'package:filmoow/presentation/common/sizes.dart';
@@ -20,6 +20,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ContentDetailPage extends StatelessWidget {
   const ContentDetailPage({
+    required this.contentId,
     required this.contentDetail,
     required this.commentList,
     required this.changeSeenStatus,
@@ -27,6 +28,7 @@ class ContentDetailPage extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  final String contentId;
   final ContentDetail contentDetail;
   final List<Comment> commentList;
   final Function(SeenStatus status) changeSeenStatus;
@@ -84,6 +86,7 @@ class ContentDetailPage extends StatelessWidget {
                       coverImage: contentDetail.coverImages.first,
                     ),
                     _ContentDetailBody(
+                      contentId: contentId,
                       title: contentDetail.title,
                       originalTitle: contentDetail.originalTitle,
                       duration: contentDetail.duration,
@@ -162,6 +165,7 @@ class _CoverImage extends StatelessWidget {
 
 class _ContentDetailBody extends StatelessWidget {
   const _ContentDetailBody({
+    required this.contentId,
     required this.title,
     required this.originalTitle,
     required this.duration,
@@ -179,6 +183,7 @@ class _ContentDetailBody extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  final String contentId;
   final String title;
   final String originalTitle;
   final String duration;
@@ -466,6 +471,7 @@ class _ContentDetailBody extends StatelessWidget {
               recommendedContentList: recommendedContent,
             ),
           _CommentList(
+            contentId: contentId,
             commentList: commentList,
           ),
         ],
@@ -728,10 +734,12 @@ class _SeenStatus extends StatelessWidget {
 
 class _CommentList extends StatelessWidget {
   const _CommentList({
+    required this.contentId,
     required this.commentList,
     Key? key,
   }) : super(key: key);
 
+  final String contentId;
   final List<Comment> commentList;
 
   @override
@@ -748,9 +756,10 @@ class _CommentList extends StatelessWidget {
             children: [
               _ContentDetailItemHeader(
                 title: 'Comentários',
-                onTap: () {
-                  //todo: go to comments page
-                },
+                onTap: () => Navigator.of(context).pushNamed(
+                  RouteNameBuilder.getCommentListRoute(),
+                  arguments: contentId,
+                ),
               ),
               Column(
                 children: [

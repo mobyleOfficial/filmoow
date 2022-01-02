@@ -1,5 +1,5 @@
 import 'package:domain/use_case/change_seen_status_use_case.dart';
-import 'package:domain/use_case/get_content_comments_use_case.dart';
+import 'package:domain/use_case/get_comment_list_use_case.dart';
 import 'package:domain/use_case/get_content_detail_use_case.dart';
 import 'package:filmoow/presentation/common/async_snapshot_response_view.dart';
 import 'package:filmoow/presentation/content/content_detail_bloc.dart';
@@ -18,7 +18,7 @@ class ContentDetailContainer extends StatelessWidget {
   static Widget create(String id) => ProxyProvider3<
           GetContentDetailUseCase,
           ChangeSeenStatusUseCase,
-          GetContentCommentsUseCase,
+          GetCommentListUseCase,
           ContentDetailBloc>(
         update: (
           context,
@@ -51,6 +51,7 @@ class ContentDetailContainer extends StatelessWidget {
             AsyncSnapshotResponseView<Loading, Success, Error>(
           snapshot: snapshot,
           successWidgetBuilder: (success) => ContentDetailPage(
+            contentId: bloc.getContentId(),
             contentDetail: success.contentDetail,
             changeSeenStatus: bloc.changeSeenStatus,
             onSeenStatus: bloc.onSeenStatus,

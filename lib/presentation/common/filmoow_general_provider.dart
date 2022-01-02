@@ -5,7 +5,7 @@ import 'package:domain/repository/home_repository.dart';
 import 'package:domain/repository/user_repository.dart';
 import 'package:domain/use_case/change_seen_status_use_case.dart';
 import 'package:domain/use_case/get_available_movies_use_case.dart';
-import 'package:domain/use_case/get_content_comments_use_case.dart';
+import 'package:domain/use_case/get_comment_list_use_case.dart';
 import 'package:domain/use_case/get_content_detail_use_case.dart';
 import 'package:domain/use_case/get_latest_news_use_case.dart';
 import 'package:domain/use_case/get_movies_coming_soon_use_case.dart';
@@ -31,6 +31,7 @@ import 'package:filmoow/data/repository/user_repository_impl.dart';
 import 'package:filmoow/infrastructure/remote/auth_interceptor.dart';
 import 'package:filmoow/infrastructure/remote/custom_dio.dart';
 import 'package:filmoow/infrastructure/routes/route_name_builder.dart';
+import 'package:filmoow/presentation/common/comment/comment_list_container.dart';
 import 'package:filmoow/presentation/content/content_detail_container.dart';
 import 'package:filmoow/presentation/home/home_container.dart';
 import 'package:filmoow/presentation/main/main_screen.dart';
@@ -196,8 +197,8 @@ class FilmoowGeneralProvider extends StatelessWidget {
             repository: repository,
           ),
         ),
-        ProxyProvider<ContentRepository, GetContentCommentsUseCase>(
-          update: (_, repository, __) => GetContentCommentsUseCase(
+        ProxyProvider<ContentRepository, GetCommentListUseCase>(
+          update: (_, repository, __) => GetCommentListUseCase(
             repository: repository,
           ),
         ),
@@ -274,6 +275,15 @@ class FilmoowGeneralProvider extends StatelessWidget {
               return MaterialPageRoute(
                 settings: settings,
                 builder: (_) => SignInContainer.create(),
+              );
+            }
+
+            if (settings.name == RouteNameBuilder.getCommentListRoute()) {
+              var id = settings.arguments as String;
+
+              return MaterialPageRoute(
+                settings: settings,
+                builder: (_) => CommentListContainer.create(id),
               );
             }
 

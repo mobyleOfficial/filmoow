@@ -3,13 +3,14 @@ import 'package:domain/model/comment_listing.dart';
 import 'package:domain/model/content_detail.dart';
 import 'package:domain/model/seen_status.dart';
 import 'package:domain/use_case/change_seen_status_use_case.dart';
-import 'package:domain/use_case/get_content_comments_use_case.dart';
+import 'package:domain/use_case/get_comment_list_use_case.dart';
 import 'package:domain/use_case/get_content_detail_use_case.dart';
+import 'package:filmoow/presentation/common/subscription_holder.dart';
 import 'package:filmoow/presentation/content/state/content_detail_state.dart';
 import 'package:filmoow/presentation/content/state/seen_status_state.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ContentDetailBloc {
+class ContentDetailBloc with SubscriptionHolder {
   ContentDetailBloc({
     required this.id,
     required this.getContentDetailUseCase,
@@ -18,13 +19,14 @@ class ContentDetailBloc {
   }) {
     MergeStream([
       _getContentDetail(id),
-    ]).listen(_onNewState.add);
+    ]).listen(_onNewState.add)
+        .addTo(subscriptions);
   }
 
   final String id;
   final GetContentDetailUseCase getContentDetailUseCase;
   final ChangeSeenStatusUseCase changeSeenStatusUseCase;
-  final GetContentCommentsUseCase getContentCommentsUseCase;
+  final GetCommentListUseCase getContentCommentsUseCase;
   final BehaviorSubject<ContentDetailState> _onNewState =
       BehaviorSubject<ContentDetailState>();
   final BehaviorSubject<SeenStatusState> _onSeenStatus =
@@ -40,9 +42,9 @@ class ContentDetailBloc {
         [
           getContentDetailUseCase(id),
           getContentCommentsUseCase(
-            GetContentCommentsUseCaseParams(
+            GetCommentListUseCaseParams(
               page: 1,
-              id: _extractId(id),
+              id: getContentId(),
             ),
           ),
         ],
@@ -79,11 +81,9 @@ class ContentDetailBloc {
     _onSeenStatus.value = StatusLoading();
 
     try {
-      final id = _extractId(this.id);
-
       await changeSeenStatusUseCase(
         ChangeSeenStatusUseCaseParams(
-          id: id,
+          id: getContentId(),
           status: status,
         ),
       );
@@ -92,7 +92,7 @@ class ContentDetailBloc {
         status: status,
       );
     } catch (error) {
-      print(error);
+      //todo: do something
     }
   }
 
@@ -101,6 +101,5 @@ class ContentDetailBloc {
     _onSeenStatus.close();
   }
 
-  String _extractId(String id) =>
-      this.id.split('-').last.replaceAll('t', '').replaceAll('/', '');
+  String getContentId() => id.split('-').last.replaceAll('t', '').replaceAll('/', '');
 }
