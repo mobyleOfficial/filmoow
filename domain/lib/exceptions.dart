@@ -5,3 +5,5 @@ class GenericException implements FilmoowException {}
 class NoConnectionException implements FilmoowException {}
 
 class UnauthorizedException implements FilmoowException {}
+
+class UseCaseParamsNeededException implements FilmoowException {}

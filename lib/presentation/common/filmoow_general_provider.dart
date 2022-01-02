@@ -5,6 +5,7 @@ import 'package:domain/repository/home_repository.dart';
 import 'package:domain/repository/user_repository.dart';
 import 'package:domain/use_case/change_seen_status_use_case.dart';
 import 'package:domain/use_case/get_available_movies_use_case.dart';
+import 'package:domain/use_case/get_content_comments_use_case.dart';
 import 'package:domain/use_case/get_content_detail_use_case.dart';
 import 'package:domain/use_case/get_latest_news_use_case.dart';
 import 'package:domain/use_case/get_movies_coming_soon_use_case.dart';
@@ -192,6 +193,11 @@ class FilmoowGeneralProvider extends StatelessWidget {
         ),
         ProxyProvider<UserRepository, GetUserInformationUseCase>(
           update: (_, repository, __) => GetUserInformationUseCase(
+            repository: repository,
+          ),
+        ),
+        ProxyProvider<ContentRepository, GetContentCommentsUseCase>(
+          update: (_, repository, __) => GetContentCommentsUseCase(
             repository: repository,
           ),
         ),

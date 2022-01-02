@@ -1,4 +1,5 @@
 import 'package:domain/use_case/change_seen_status_use_case.dart';
+import 'package:domain/use_case/get_content_comments_use_case.dart';
 import 'package:domain/use_case/get_content_detail_use_case.dart';
 import 'package:filmoow/presentation/common/async_snapshot_response_view.dart';
 import 'package:filmoow/presentation/content/content_detail_bloc.dart';
@@ -14,12 +15,16 @@ class ContentDetailContainer extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  static Widget create(String id) => ProxyProvider2<GetContentDetailUseCase,
-          ChangeSeenStatusUseCase, ContentDetailBloc>(
+  static Widget create(String id) => ProxyProvider3<
+          GetContentDetailUseCase,
+          ChangeSeenStatusUseCase,
+          GetContentCommentsUseCase,
+          ContentDetailBloc>(
         update: (
           context,
           getContentDetailUseCase,
           changeSeenStatusUseCase,
+          getContentCommentsUseCase,
           bloc,
         ) =>
             bloc ??
@@ -27,6 +32,7 @@ class ContentDetailContainer extends StatelessWidget {
               id: id,
               getContentDetailUseCase: getContentDetailUseCase,
               changeSeenStatusUseCase: changeSeenStatusUseCase,
+              getContentCommentsUseCase: getContentCommentsUseCase,
             ),
         dispose: (_, bloc) => bloc.dispose(),
         child: Consumer<ContentDetailBloc>(
@@ -48,6 +54,7 @@ class ContentDetailContainer extends StatelessWidget {
             contentDetail: success.contentDetail,
             changeSeenStatus: bloc.changeSeenStatus,
             onSeenStatus: bloc.onSeenStatus,
+            commentList: success.commentList,
           ),
           errorWidgetBuilder: (error) => Container(
             color: Colors.red,

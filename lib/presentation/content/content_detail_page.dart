@@ -1,12 +1,14 @@
 import 'dart:ui';
 
 import 'package:domain/model/actor.dart';
+import 'package:domain/model/comment.dart';
 import 'package:domain/model/content_classification.dart';
 import 'package:domain/model/content_detail.dart';
 import 'package:domain/model/recommended_content.dart';
 import 'package:domain/model/seen_status.dart';
 import 'package:filmoow/infrastructure/routes/route_name_builder.dart';
 import 'package:filmoow/presentation/common/async_snapshot_response_view.dart';
+import 'package:filmoow/presentation/common/comment/comment_card.dart';
 import 'package:filmoow/presentation/common/filmoow_assets.dart';
 import 'package:filmoow/presentation/common/remote_image.dart';
 import 'package:filmoow/presentation/common/sizes.dart';
@@ -19,12 +21,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class ContentDetailPage extends StatelessWidget {
   const ContentDetailPage({
     required this.contentDetail,
+    required this.commentList,
     required this.changeSeenStatus,
     required this.onSeenStatus,
     Key? key,
   }) : super(key: key);
 
   final ContentDetail contentDetail;
+  final List<Comment> commentList;
   final Function(SeenStatus status) changeSeenStatus;
   final Stream<SeenStatusState> onSeenStatus;
 
@@ -94,6 +98,7 @@ class ContentDetailPage extends StatelessWidget {
                       scoreQuantity: contentDetail.scoreQuantity,
                       releaseYear: contentDetail.releaseYear,
                       onSeenStatus: onSeenStatus,
+                      commentList: commentList,
                     ),
                   ],
                 ),
@@ -171,6 +176,7 @@ class _ContentDetailBody extends StatelessWidget {
     required this.scoreQuantity,
     required this.releaseYear,
     required this.onSeenStatus,
+    required this.commentList,
     Key? key,
   }) : super(key: key);
 
@@ -187,15 +193,16 @@ class _ContentDetailBody extends StatelessWidget {
   final int? scoreQuantity;
   final int releaseYear;
   final Stream<SeenStatusState> onSeenStatus;
+  final List<Comment> commentList;
 
   @override
   Widget build(BuildContext context) => Column(
         children: [
           Padding(
             padding: const EdgeInsets.only(
-              top: 10,
-              left: 10,
-              right: 10,
+              top: Sizes.dp12,
+              left: Sizes.dp12,
+              right: Sizes.dp12,
             ),
             child: SizedBox(
               width: MediaQuery.of(context).size.width,
@@ -251,8 +258,8 @@ class _ContentDetailBody extends StatelessWidget {
                         _getClassificationAsset(
                           classification,
                         ),
-                        width: 20,
-                        height: 20,
+                        width: Sizes.dp20,
+                        height: Sizes.dp20,
                         matchTextDirection: true,
                       ),
                     ],
@@ -263,9 +270,9 @@ class _ContentDetailBody extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(
-              top: 10,
-              left: 10,
-              right: 10,
+              top: Sizes.dp12,
+              left: Sizes.dp12,
+              right: Sizes.dp12,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -387,9 +394,9 @@ class _ContentDetailBody extends StatelessWidget {
           if (genres.isNotEmpty)
             Padding(
               padding: const EdgeInsets.only(
-                top: 10,
-                left: 10,
-                right: 10,
+                top: Sizes.dp12,
+                left: Sizes.dp12,
+                right: Sizes.dp12,
               ),
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
@@ -423,9 +430,9 @@ class _ContentDetailBody extends StatelessWidget {
             ),
           Padding(
             padding: const EdgeInsets.only(
-              top: 10,
-              left: 10,
-              right: 10,
+              top: Sizes.dp12,
+              left: Sizes.dp12,
+              right: Sizes.dp12,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -459,6 +466,9 @@ class _ContentDetailBody extends StatelessWidget {
             _RecommendedContentList(
               recommendedContentList: recommendedContent,
             ),
+          _CommentList(
+            commentList: commentList,
+          ),
         ],
       );
 
@@ -503,19 +513,27 @@ class _ActorList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.only(
-          top: 10,
-          left: 10,
-          right: 10,
+          top: Sizes.dp12,
+          left: Sizes.dp12,
+          right: Sizes.dp12,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Elenco',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text(
+                  'Elenco',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                  ),
+                ),
+                FaIcon(
+                  FontAwesomeIcons.chevronRight,
+                ),
+              ],
             ),
             SizedBox(
               height: Sizes.dp120,
@@ -577,9 +595,9 @@ class _RecommendedContentList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.only(
-          top: 10,
-          left: 10,
-          right: 10,
+          top: Sizes.dp12,
+          left: Sizes.dp12,
+          right: Sizes.dp12,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -592,7 +610,7 @@ class _RecommendedContentList extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height:  Sizes.dp120,
+              height: Sizes.dp120,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
@@ -714,6 +732,56 @@ class _SeenStatus extends StatelessWidget {
             return const SizedBox();
           },
           errorWidgetBuilder: (_) => const SizedBox(),
+        ),
+      );
+}
+
+class _CommentList extends StatelessWidget {
+  const _CommentList({
+    required this.commentList,
+    Key? key,
+  }) : super(key: key);
+
+  final List<Comment> commentList;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(
+          top: Sizes.dp12,
+          left: Sizes.dp12,
+          right: Sizes.dp12,
+        ),
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text(
+                    'Comentários',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                    ),
+                  ),
+                  FaIcon(
+                    FontAwesomeIcons.chevronRight,
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  ...commentList.map(
+                    (comment) => CommentCard(
+                      comment: comment,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       );
 }

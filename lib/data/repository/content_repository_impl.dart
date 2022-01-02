@@ -1,3 +1,4 @@
+import 'package:domain/model/comment_listing.dart';
 import 'package:domain/model/content_detail.dart';
 import 'package:domain/model/seen_status.dart';
 import 'package:domain/repository/content_repository.dart';
@@ -25,5 +26,12 @@ class ContentRepositoryImpl implements ContentRepository {
         await dataSource.changeSeenStatus(id, seenStatus.toRemoteModel());
 
     return Future.value(response.toSeenStatusDomain());
+  }
+
+  @override
+  Future<CommentListing> getCommentList(int page, String id) async {
+    final commentListingRM = await dataSource.getCommentList(page, id);
+
+    return Future.value(commentListingRM.toDomain());
   }
 }

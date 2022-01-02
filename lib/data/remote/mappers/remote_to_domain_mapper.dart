@@ -1,4 +1,7 @@
 import 'package:domain/model/actor.dart';
+import 'package:domain/model/comment.dart';
+import 'package:domain/model/comment_listing.dart';
+import 'package:domain/model/comment_status.dart';
 import 'package:domain/model/content_classification.dart';
 import 'package:domain/model/content_detail.dart';
 import 'package:domain/model/content_list.dart';
@@ -10,9 +13,13 @@ import 'package:domain/model/recommended_content.dart';
 import 'package:domain/model/seen_status.dart';
 import 'package:domain/model/series.dart';
 import 'package:domain/model/tv_show.dart';
+import 'package:domain/model/user.dart';
 import 'package:domain/model/user_information.dart';
 import 'package:domain/model/watched_time.dart';
 import 'package:filmoow/data/remote/model/actor_remote_model.dart';
+import 'package:filmoow/data/remote/model/comment_listing_remote_model.dart';
+import 'package:filmoow/data/remote/model/comment_remote_model.dart';
+import 'package:filmoow/data/remote/model/comment_stats_remote_model.dart';
 import 'package:filmoow/data/remote/model/content_detail_remote_model.dart';
 import 'package:filmoow/data/remote/model/content_list_remote_model.dart';
 import 'package:filmoow/data/remote/model/content_list_stats_remote_model.dart';
@@ -23,6 +30,7 @@ import 'package:filmoow/data/remote/model/recommended_content_remote_model.dart'
 import 'package:filmoow/data/remote/model/series_remote_model.dart';
 import 'package:filmoow/data/remote/model/tv_show_remote_model.dart';
 import 'package:filmoow/data/remote/model/user_information_remote_model.dart';
+import 'package:filmoow/data/remote/model/user_remote_model.dart';
 
 extension MovieDomainToRemoteMapper on MovieRemoteModel {
   Movie toDomain() => Movie(
@@ -218,5 +226,45 @@ extension UserInformationRemoteToDomain on UserInformationRemoteModel {
         seenNumber: seenNumber,
         commentNumber: commentNumber,
         listNumber: listNumber,
+      );
+}
+
+extension CommentListingRemoteToDomain on CommentListingRemoteModel {
+  CommentListing toDomain() => CommentListing(
+        hasNext: hasNext,
+        commentList: commentList
+            .map(
+              (comment) => comment.toDomain(),
+            )
+            .toList(),
+      );
+}
+
+extension CommentRemoteToDomain on CommentRemoteModel {
+  Comment toDomain() => Comment(
+        id: id,
+        user: user.toDomain(),
+        creationTime: creationTime,
+        content: content,
+        spoilerList: spoilerList,
+        stats: stats.toDomain(),
+      );
+}
+
+extension UserRemoteToDomain on UserRemoteModel {
+  User toDomain() => User(
+        id: id,
+        name: name,
+        photoUrl: photoUrl,
+      );
+}
+
+extension CommentStatsRemoteToDomain on CommentStatsRemoteModel {
+  CommentStats toDomain() => CommentStats(
+        rating: rating,
+        likesQuantity: likesQuantity,
+        repliesQuantity: repliesQuantity,
+        hasDislikes: hasDislikes,
+        hasUserLike: hasUserLike,
       );
 }
