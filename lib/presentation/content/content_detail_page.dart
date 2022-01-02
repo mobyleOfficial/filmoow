@@ -77,8 +77,7 @@ class ContentDetailPage extends StatelessWidget {
         body: Center(
           child: CustomScrollView(
             slivers: [
-              SliverFillRemaining(
-                hasScrollBody: false,
+              SliverToBoxAdapter(
                 child: Column(
                   children: [
                     _CoverImage(
