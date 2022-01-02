@@ -519,20 +519,11 @@ class _ActorList extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  'Elenco',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                  ),
-                ),
-                FaIcon(
-                  FontAwesomeIcons.chevronRight,
-                ),
-              ],
+            _ContentDetailItemHeader(
+              title: 'Elenco',
+              onTap: () {
+                //todo: go to tech info page
+              },
             ),
             SizedBox(
               height: Sizes.dp120,
@@ -755,20 +746,11 @@ class _CommentList extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    'Comentários',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                    ),
-                  ),
-                  FaIcon(
-                    FontAwesomeIcons.chevronRight,
-                  ),
-                ],
+              _ContentDetailItemHeader(
+                title: 'Comentários',
+                onTap: () {
+                  //todo: go to comments page
+                },
               ),
               Column(
                 children: [
@@ -781,6 +763,37 @@ class _CommentList extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      );
+}
+
+class _ContentDetailItemHeader extends StatelessWidget {
+  const _ContentDetailItemHeader({
+    required this.title,
+    this.onTap,
+    Key? key,
+  }) : super(key: key);
+
+  final String title;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) => InkWell(
+        onTap: onTap,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 18,
+              ),
+            ),
+            const FaIcon(
+              FontAwesomeIcons.chevronRight,
+            ),
+          ],
         ),
       );
 }

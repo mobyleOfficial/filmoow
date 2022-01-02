@@ -45,11 +45,17 @@ class CommentCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Row(
+                      Wrap(
                         children: [
                           Text(
-                            '${comment.user.name} -'
-                            ' ${comment.creationTime}',
+                            '${comment.user.name} - ',
+                            style: const TextStyle(
+                              color: Colors.black54,
+                              fontSize: 13,
+                            ),
+                          ),
+                          Text(
+                            comment.creationTime,
                             style: const TextStyle(
                               color: Colors.black54,
                               fontSize: 13,
