@@ -11,10 +11,11 @@ import 'package:domain/use_case/get_popular_list_use_case.dart';
 import 'package:domain/use_case/get_popular_movie_use_case.dart';
 import 'package:domain/use_case/get_popular_series_use_case.dart';
 import 'package:domain/use_case/get_popular_tv_show_use_case.dart';
+import 'package:filmoow/presentation/common/subscription_holder.dart';
 import 'package:filmoow/presentation/home/state/home_state.dart';
 import 'package:rxdart/rxdart.dart';
 
-class HomeBloc {
+class HomeBloc with SubscriptionHolder {
   HomeBloc({
     required this.getPopularMovieListUseCase,
     required this.getMoviesWeekPremiereUseCase,
@@ -27,7 +28,8 @@ class HomeBloc {
   }) {
     MergeStream([
       _getPopularMovieList(),
-    ]).listen(_onNewState.add);
+    ]).listen(_onNewState.add)
+        .addTo(subscriptions);
   }
 
   final GetPopularMovieUseCase getPopularMovieListUseCase;

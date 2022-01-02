@@ -1,9 +1,10 @@
 import 'package:domain/use_case/sign_in_use_case.dart';
+import 'package:filmoow/presentation/common/subscription_holder.dart';
 import 'package:filmoow/presentation/profile/sign_in/state/sign_in_action.dart';
 import 'package:filmoow/presentation/profile/sign_in/state/sign_in_state.dart';
 import 'package:rxdart/rxdart.dart';
 
-class SignInBloc {
+class SignInBloc with SubscriptionHolder {
   SignInBloc({
     required this.signInUseCase,
   }) {
@@ -11,7 +12,8 @@ class SignInBloc {
         .flatMap(
           (token) => _signIn(token),
         )
-        .listen(_onNewState.add);
+        .listen(_onNewState.add)
+        .addTo(subscriptions);
   }
 
   final SignInUseCase signInUseCase;
