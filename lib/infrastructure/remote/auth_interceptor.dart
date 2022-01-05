@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:domain/exceptions.dart';
 import 'package:filmoow/data/local/secure/auth/auth_secure_data_source.dart';
 
 class AuthInterceptor extends InterceptorsWrapper {
@@ -14,12 +15,21 @@ class AuthInterceptor extends InterceptorsWrapper {
               {'Authorization': accessToken},
             );
           }
-        } catch (_) {
+        } catch (error) {
           //do nothing
         }
 
         handler.next(options);
-      }
+      },
+    onError: (error, handler) {
+        if(error is DioError) {
+          if(error.error == 'Http status error [401]') {
+            //todo: Call data observable to update all blocs
+            //handler.next();
+          }
+        }
+        handler.next(error);
+    }
   );
 
   final AuthSecureDataSource authSecureDataSource;

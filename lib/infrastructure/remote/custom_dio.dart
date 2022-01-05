@@ -29,6 +29,10 @@ class CustomDio extends DioForNative {
       );
     } catch (error) {
       if (error is DioError && error.error is SocketException) {
+        if(error.error == 'Http status error [401]') {
+          throw UnauthorizedException();
+        }
+
         throw NoConnectionException();
       } else {
         rethrow;
