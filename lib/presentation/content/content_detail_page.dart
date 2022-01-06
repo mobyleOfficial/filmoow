@@ -756,7 +756,7 @@ class _CommentList extends StatelessWidget {
             children: [
               _ContentDetailItemHeader(
                 title: 'Comentários',
-                onTap: () => Navigator.of(context).pushNamed(
+                onTap: () => Navigator.of(context, rootNavigator: true).pushNamed(
                   RouteNameBuilder.getCommentListRoute(),
                   arguments: contentId,
                 ),
