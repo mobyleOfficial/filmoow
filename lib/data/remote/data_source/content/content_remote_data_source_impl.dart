@@ -36,4 +36,12 @@ class ContentRemoteDataSourceImpl implements ContentRemoteDataSource {
 
     return CommentListingRemoteModel.fromJson(response.data);
   }
+
+  @override
+  Future<void> addComment(String id, String comment) => dio.post(
+        '/content/comments/$id',
+        data: {
+          'message': comment,
+        },
+      );
 }

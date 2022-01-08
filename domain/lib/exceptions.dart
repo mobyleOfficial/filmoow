@@ -7,3 +7,5 @@ class NoConnectionException implements FilmoowException {}
 class UnauthorizedException implements FilmoowException {}
 
 class UseCaseParamsNeededException implements FilmoowException {}
+
+class EmptyFormFieldException implements FilmoowException {}

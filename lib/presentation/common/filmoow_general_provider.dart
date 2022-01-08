@@ -3,6 +3,7 @@ import 'package:domain/repository/auth_repository.dart';
 import 'package:domain/repository/content_repository.dart';
 import 'package:domain/repository/home_repository.dart';
 import 'package:domain/repository/user_repository.dart';
+import 'package:domain/use_case/add_comment_use_case.dart';
 import 'package:domain/use_case/change_seen_status_use_case.dart';
 import 'package:domain/use_case/get_available_movies_use_case.dart';
 import 'package:domain/use_case/get_comment_list_use_case.dart';
@@ -80,6 +81,7 @@ class FilmoowGeneralProvider extends StatelessWidget {
       ProxyProvider<AuthSecureDataSource, Dio>(
         update: (_, authSecureDataSource, __) {
           BaseOptions options = BaseOptions(
+            //baseUrl: 'https://filnow.herokuapp.com'
             baseUrl: 'http://192.168.56.1:8080',
           );
 
@@ -199,6 +201,11 @@ class FilmoowGeneralProvider extends StatelessWidget {
         ),
         ProxyProvider<ContentRepository, GetCommentListUseCase>(
           update: (_, repository, __) => GetCommentListUseCase(
+            repository: repository,
+          ),
+        ),
+        ProxyProvider<ContentRepository, AddCommentUseCase>(
+          update: (_, repository, __) => AddCommentUseCase(
             repository: repository,
           ),
         ),

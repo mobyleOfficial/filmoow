@@ -16,4 +16,4 @@ class CommentListingState implements CommentListState {
 
 class CommentListingError implements CommentListState {}
 
-class Loading implements CommentListState {}
+class Loading extends CommentListingState {}

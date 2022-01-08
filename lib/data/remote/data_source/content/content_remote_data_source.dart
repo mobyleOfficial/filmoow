@@ -10,4 +10,6 @@ abstract class ContentRemoteDataSource {
   );
 
   Future<CommentListingRemoteModel> getCommentList(int page, String id);
+
+  Future<void> addComment(String id, String comment);
 }

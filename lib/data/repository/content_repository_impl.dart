@@ -34,4 +34,8 @@ class ContentRepositoryImpl implements ContentRepository {
 
     return Future.value(commentListingRM.toDomain());
   }
+
+  @override
+  Future<void> addComment(String id, String comment) =>
+      dataSource.addComment(id, comment);
 }

@@ -8,4 +8,6 @@ abstract class ContentRepository {
   Future<SeenStatus> changeSeenStatus(String id, SeenStatus seenStatus);
 
   Future<CommentListing> getCommentList(int page, String id);
+
+  Future<void> addComment(String id, String comment);
 }

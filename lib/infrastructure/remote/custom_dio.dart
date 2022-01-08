@@ -28,12 +28,13 @@ class CustomDio extends DioForNative {
         onSendProgress: onSendProgress,
       );
     } catch (error) {
-      if (error is DioError && error.error is SocketException) {
-        if(error.error == 'Http status error [401]') {
+      if (error is DioError) {
+        if (error.error == 'Http status error [401]') {
           throw UnauthorizedException();
+        } else if (error.error is SocketException) {
+          throw NoConnectionException();
         }
-
-        throw NoConnectionException();
+        rethrow;
       } else {
         rethrow;
       }
