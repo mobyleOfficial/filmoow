@@ -7,7 +7,7 @@ import 'package:domain/use_case/get_available_movies_use_case.dart';
 import 'package:domain/use_case/get_latest_news_use_case.dart';
 import 'package:domain/use_case/get_movies_coming_soon_use_case.dart';
 import 'package:domain/use_case/get_movies_week_premiere_use_case.dart';
-import 'package:domain/use_case/get_popular_list_use_case.dart';
+import 'package:domain/use_case/get_popular_home_list_use_case.dart';
 import 'package:domain/use_case/get_popular_movie_use_case.dart';
 import 'package:domain/use_case/get_popular_series_use_case.dart';
 import 'package:domain/use_case/get_popular_tv_show_use_case.dart';
@@ -38,7 +38,7 @@ class HomeBloc with SubscriptionHolder {
   final GetAvailableMovieUseCase getAvailableMovieUseCase;
   final GetPopularTvShowUseCase getPopularTvShowUseCase;
   final GetPopularSeriesUseCase getPopularSeriesUseCase;
-  final GetPopularListUseCase getPopularListUseCase;
+  final GetPopularHomeListUseCase getPopularListUseCase;
   final GetLatestUseCase getLatestUseCase;
   final BehaviorSubject<HomeState> _onNewState = BehaviorSubject<HomeState>();
 

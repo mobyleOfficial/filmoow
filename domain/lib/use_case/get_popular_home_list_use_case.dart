@@ -2,8 +2,8 @@ import 'package:domain/model/content_list.dart';
 import 'package:domain/repository/home_repository.dart';
 import 'package:domain/use_case/use_case.dart';
 
-class GetPopularListUseCase extends UseCaseImpl<void, List<ContentList>> {
-  GetPopularListUseCase({
+class GetPopularHomeListUseCase extends UseCaseImpl<void, List<ContentList>> {
+  GetPopularHomeListUseCase({
     required this.repository,
   });
 

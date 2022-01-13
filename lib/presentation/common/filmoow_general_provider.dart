@@ -2,19 +2,23 @@ import 'package:dio/dio.dart';
 import 'package:domain/repository/auth_repository.dart';
 import 'package:domain/repository/content_repository.dart';
 import 'package:domain/repository/home_repository.dart';
+import 'package:domain/repository/lists_repository.dart';
 import 'package:domain/repository/user_repository.dart';
 import 'package:domain/use_case/add_comment_use_case.dart';
 import 'package:domain/use_case/change_seen_status_use_case.dart';
+import 'package:domain/use_case/get_all_lists_use_case.dart';
 import 'package:domain/use_case/get_available_movies_use_case.dart';
 import 'package:domain/use_case/get_comment_list_use_case.dart';
 import 'package:domain/use_case/get_content_detail_use_case.dart';
 import 'package:domain/use_case/get_latest_news_use_case.dart';
 import 'package:domain/use_case/get_movies_coming_soon_use_case.dart';
 import 'package:domain/use_case/get_movies_week_premiere_use_case.dart';
-import 'package:domain/use_case/get_popular_list_use_case.dart';
+import 'package:domain/use_case/get_popular_home_list_use_case.dart';
+import 'package:domain/use_case/get_popular_lists_use_case.dart';
 import 'package:domain/use_case/get_popular_movie_use_case.dart';
 import 'package:domain/use_case/get_popular_series_use_case.dart';
 import 'package:domain/use_case/get_popular_tv_show_use_case.dart';
+import 'package:domain/use_case/get_treding_lists_use_case.dart';
 import 'package:domain/use_case/get_user_information_use_case.dart';
 import 'package:domain/use_case/sign_in_use_case.dart';
 import 'package:filmoow/data/local/secure/auth/auth_secure_data_source.dart';
@@ -23,11 +27,14 @@ import 'package:filmoow/data/remote/data_source/content/content_remote_data_sour
 import 'package:filmoow/data/remote/data_source/content/content_remote_data_source_impl.dart';
 import 'package:filmoow/data/remote/data_source/home/home_remote_data_source.dart';
 import 'package:filmoow/data/remote/data_source/home/home_remote_data_source_impl.dart';
+import 'package:filmoow/data/remote/data_source/lists/lists_remote_data_source.dart';
+import 'package:filmoow/data/remote/data_source/lists/lists_remote_data_source_impl.dart';
 import 'package:filmoow/data/remote/data_source/user/user_remote_data_source.dart';
 import 'package:filmoow/data/remote/data_source/user/user_remote_data_source_impl.dart';
 import 'package:filmoow/data/repository/auth_repository_impl.dart';
 import 'package:filmoow/data/repository/content_repository_impl.dart';
 import 'package:filmoow/data/repository/home_repository_impl.dart';
+import 'package:filmoow/data/repository/lists_repository_impl.dart';
 import 'package:filmoow/data/repository/user_repository_impl.dart';
 import 'package:filmoow/infrastructure/remote/auth_interceptor.dart';
 import 'package:filmoow/infrastructure/remote/custom_dio.dart';
@@ -35,6 +42,7 @@ import 'package:filmoow/infrastructure/routes/route_name_builder.dart';
 import 'package:filmoow/presentation/common/comment/comment_list_container.dart';
 import 'package:filmoow/presentation/content/content_detail_container.dart';
 import 'package:filmoow/presentation/home/home_container.dart';
+import 'package:filmoow/presentation/lists/lists_container.dart';
 import 'package:filmoow/presentation/main/main_screen.dart';
 import 'package:filmoow/presentation/profile/filmow_sign_in/filmow_sign_in_container.dart';
 import 'package:filmoow/presentation/profile/profile/profile_container.dart';
@@ -110,6 +118,11 @@ class FilmoowGeneralProvider extends StatelessWidget {
             dio: dio,
           ),
         ),
+        ProxyProvider<Dio, ListsRemoteDataSource>(
+          update: (_, dio, __) => ListsRemoteDataSourceImpl(
+            dio: dio,
+          ),
+        ),
       ];
 
   List<SingleChildWidget> _buildRepositoryProviders() => [
@@ -134,6 +147,11 @@ class FilmoowGeneralProvider extends StatelessWidget {
               UserRepositoryImpl(
             secureDataSource: secureDataSource,
             userRemoteDataSource: userRemoteDataSource,
+          ),
+        ),
+        ProxyProvider<ListsRemoteDataSource, ListsRepository>(
+          update: (_, remoteDataSource, __) => ListsRepositoryImpl(
+            remoteDataSource: remoteDataSource,
           ),
         ),
       ];
@@ -174,8 +192,8 @@ class FilmoowGeneralProvider extends StatelessWidget {
             repository: repository,
           ),
         ),
-        ProxyProvider<HomeRepository, GetPopularListUseCase>(
-          update: (_, repository, __) => GetPopularListUseCase(
+        ProxyProvider<HomeRepository, GetPopularHomeListUseCase>(
+          update: (_, repository, __) => GetPopularHomeListUseCase(
             repository: repository,
           ),
         ),
@@ -206,6 +224,21 @@ class FilmoowGeneralProvider extends StatelessWidget {
         ),
         ProxyProvider<ContentRepository, AddCommentUseCase>(
           update: (_, repository, __) => AddCommentUseCase(
+            repository: repository,
+          ),
+        ),
+        ProxyProvider<ListsRepository, GetAllListsUseCase>(
+          update: (_, repository, __) => GetAllListsUseCase(
+            repository: repository,
+          ),
+        ),
+        ProxyProvider<ListsRepository, GetTrendingListUseCase>(
+          update: (_, repository, __) => GetTrendingListUseCase(
+            repository: repository,
+          ),
+        ),
+        ProxyProvider<ListsRepository, GetPopularListsUseCase>(
+          update: (_, repository, __) => GetPopularListsUseCase(
             repository: repository,
           ),
         ),
@@ -240,9 +273,7 @@ class FilmoowGeneralProvider extends StatelessWidget {
             if (settings.name == RouteNameBuilder.getListsRoute()) {
               return MaterialPageRoute(
                 settings: settings,
-                builder: (_) => const Scaffold(
-                  body: Text('LISTS'),
-                ),
+                builder: (_) => ListsContainer.create(),
               );
             }
 
