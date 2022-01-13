@@ -1,5 +1,5 @@
 import 'package:filmoow/presentation/common/sizes.dart';
-import 'package:filmoow/presentation/lists/all_lists/all_lists_container.dart';
+import 'package:filmoow/presentation/lists/recent_lists/recent_lists_container.dart';
 import 'package:filmoow/presentation/lists/popular_lists/popular_lists_container.dart';
 import 'package:filmoow/presentation/lists/trending_lists/trending_lists_container.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +56,7 @@ class _ListPageState extends State<ListPage> with TickerProviderStateMixin {
         body: IndexedStack(
           index: _tabIndex,
           children: [
-            AllListsContainer.create(),
+            RecentListsContainer.create(),
             PopularListsContainer.create(),
             TrendingListsContainer.create(),
           ],

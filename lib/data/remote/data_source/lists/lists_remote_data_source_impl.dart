@@ -17,7 +17,7 @@ class ListsRemoteDataSourceImpl implements ListsRemoteDataSource {
   }
 
   @override
-  Future<ListsListingRemoteModel> getAllLists(int page) async {
+  Future<ListsListingRemoteModel> getRecentLists(int page) async {
     final response = await dio.get('/lists/recent?page=$page');
 
     return ListsListingRemoteModel.fromJson(response.data);

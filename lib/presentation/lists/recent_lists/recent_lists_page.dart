@@ -1,8 +1,8 @@
 import 'package:domain/model/content_list.dart';
 import 'package:flutter/material.dart';
 
-class AllListsPage extends StatelessWidget {
-  const AllListsPage({
+class RecentListsPage extends StatelessWidget {
+  const RecentListsPage({
     required this.lists,
     Key? key,
   }) : super(key: key);

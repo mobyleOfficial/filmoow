@@ -6,7 +6,7 @@ import 'package:domain/repository/lists_repository.dart';
 import 'package:domain/repository/user_repository.dart';
 import 'package:domain/use_case/add_comment_use_case.dart';
 import 'package:domain/use_case/change_seen_status_use_case.dart';
-import 'package:domain/use_case/get_all_lists_use_case.dart';
+import 'package:domain/use_case/get_recent_lists_use_case.dart';
 import 'package:domain/use_case/get_available_movies_use_case.dart';
 import 'package:domain/use_case/get_comment_list_use_case.dart';
 import 'package:domain/use_case/get_content_detail_use_case.dart';
@@ -227,8 +227,8 @@ class FilmoowGeneralProvider extends StatelessWidget {
             repository: repository,
           ),
         ),
-        ProxyProvider<ListsRepository, GetAllListsUseCase>(
-          update: (_, repository, __) => GetAllListsUseCase(
+        ProxyProvider<ListsRepository, GetRecentListsUseCase>(
+          update: (_, repository, __) => GetRecentListsUseCase(
             repository: repository,
           ),
         ),

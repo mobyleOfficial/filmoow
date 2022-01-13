@@ -18,8 +18,8 @@ class ListsRepositoryImpl implements ListsRepository {
   }
 
   @override
-  Future<ListsListing> getAllLists(int page) async {
-    final list = await remoteDataSource.getAllLists(page);
+  Future<ListsListing> getRecentLists(int page) async {
+    final list = await remoteDataSource.getRecentLists(page);
 
     return list.toDomain();
   }
