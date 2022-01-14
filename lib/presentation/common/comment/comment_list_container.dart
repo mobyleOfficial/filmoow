@@ -37,7 +37,7 @@ class CommentListContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => CommentListPage(
-        onNextCommentListState: bloc.onNextCommentListState,
+        onNextCommentListState: bloc.onNextStateSubject,
         requestNextPage: bloc.requestNextPage,
         onTryAgain: () {
           //todo: Add try agaon

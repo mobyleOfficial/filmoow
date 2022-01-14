@@ -14,4 +14,4 @@ class PaginationListingState<T, Error> implements PaginationState {
 
 class PaginationListingError implements PaginationState {}
 
-class Loading extends PaginationState {}
+class PaginationLoading extends PaginationState {}

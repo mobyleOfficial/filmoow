@@ -1,12 +1,14 @@
+import 'package:domain/model/comment.dart';
+import 'package:domain/use_case/add_comment_use_case.dart';
 import 'package:domain/use_case/get_comment_list_use_case.dart';
 import 'package:filmoow/presentation/common/comment/action/comment_list_actions.dart';
 import 'package:filmoow/presentation/common/comment/state/comment_list_state.dart';
 import 'package:filmoow/presentation/common/form_text_field/text_input_status.dart';
-import 'package:filmoow/presentation/common/subscription_holder.dart';
-import 'package:domain/use_case/add_comment_use_case.dart';
+import 'package:filmoow/presentation/common/pagination/pagination_bloc.dart';
+import 'package:filmoow/presentation/common/pagination/pagination_state.dart';
 import 'package:rxdart/rxdart.dart';
 
-class CommentListBloc with SubscriptionHolder {
+class CommentListBloc extends PaginationBloc<Comment, PaginationListingError> {
   CommentListBloc({
     required this.id,
     required this.getCommentListUseCase,
@@ -14,13 +16,12 @@ class CommentListBloc with SubscriptionHolder {
   }) {
     MergeStream(
       [
-        _onNextCommentListPageRequestSubject.stream.flatMap(_getCommentList),
+        onNexPageRequestSubject.stream.flatMap(_getCommentList),
         _onTryAgainSubject.flatMap(
           (_) => _getCommentList(0),
         )
       ],
-    ).listen(_onNextCommentListStateSubject.add)
-        .addTo(subscriptions);
+    ).listen(onNextStateSubject.add).addTo(subscriptions);
 
     _onAddCommentSubject
         .flatMap(
@@ -39,18 +40,11 @@ class CommentListBloc with SubscriptionHolder {
   final String id;
   final GetCommentListUseCase getCommentListUseCase;
   final AddCommentUseCase addCommentUseCase;
-  final _onNextCommentListStateSubject =
-      BehaviorSubject<CommentListingState>.seeded(
-    const CommentListingState(),
-  );
-  final _onNextCommentListPageRequestSubject = PublishSubject<int>();
+
   final statusStream = PublishSubject<TextInputStatus>();
   final _onAction = PublishSubject<CommentListActions>();
 
   int _page = 1;
-
-  Stream<CommentListingState> get onNextCommentListState =>
-      _onNextCommentListStateSubject.stream;
 
   Stream<CommentListActions> get onAction => _onAction.stream;
 
@@ -74,11 +68,11 @@ class CommentListBloc with SubscriptionHolder {
 
   final _onTryAgainSubject = PublishSubject<void>();
 
-  Stream<CommentListingState> _getCommentList(int offset) async* {
-    final lastListingState = _onNextCommentListStateSubject.value;
+  Stream<PaginationListingState<Comment, PaginationListingError>> _getCommentList(int offset) async* {
+    final lastListingState = onNextStateSubject.value;
 
     try {
-      if (lastListingState.commentList != null) {
+      if (lastListingState.list != null) {
         _page++;
       }
 
@@ -89,18 +83,18 @@ class CommentListBloc with SubscriptionHolder {
         ),
       );
 
-      yield CommentListingState(
+      yield PaginationListingState<Comment, PaginationListingError>(
         nextOffset: commentListing.hasNext ? _page : null,
-        commentList: [
-          ...lastListingState.commentList ?? [],
+        list: [
+          ...lastListingState.list ?? [],
           ...commentListing.commentList
         ],
       );
     } catch (error) {
-      yield CommentListingState(
-        error: CommentListingError(),
+      yield PaginationListingState<Comment, PaginationListingError>(
+        error: PaginationListingError(),
         nextOffset: lastListingState.nextOffset,
-        commentList: lastListingState.commentList,
+        list: lastListingState.list,
       );
     }
   }
@@ -118,8 +112,8 @@ class CommentListBloc with SubscriptionHolder {
         ),
       );
 
-      _onNextCommentListStateSubject.add(
-        const CommentListingState(),
+      onNextStateSubject.add(
+        const PaginationListingState<Comment, PaginationListingError>(),
       );
 
       _onAction.add(DismissCommentAction());
@@ -127,17 +121,12 @@ class CommentListBloc with SubscriptionHolder {
       _onTryAgainSubject.add(null);
     } catch (error) {
       //todo: do somethinng
-      print(error);
     }
   }
 
-  void requestNextPage(int offset) {
-    _onNextCommentListPageRequestSubject.add(offset);
-  }
-
+  @override
   void dispose() {
-    _onNextCommentListPageRequestSubject.close();
-    _onNextCommentListStateSubject.close();
+    super.dispose();
     statusStream.close();
     _onCommentValueChangedSubject.close();
     _commentInputStatusSubject.close();

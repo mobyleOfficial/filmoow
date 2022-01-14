@@ -5,6 +5,7 @@ import 'package:filmoow/presentation/common/comment/state/comment_list_state.dar
 import 'package:filmoow/presentation/common/comment/widget/comment_card.dart';
 import 'package:filmoow/presentation/common/form_text_field/edit_text.dart';
 import 'package:filmoow/presentation/common/form_text_field/text_input_status.dart';
+import 'package:filmoow/presentation/common/pagination/pagination_state.dart';
 import 'package:filmoow/presentation/common/sizes.dart';
 import 'package:filmoow/presentation/common/subscription_holder.dart';
 import 'package:filmoow/presentation/common/view_utils.dart';
@@ -24,7 +25,8 @@ class CommentListPage extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
-  final Stream<CommentListingState> onNextCommentListState;
+  final Stream<PaginationListingState<Comment, PaginationListingError>>
+      onNextCommentListState;
   final ValueChanged<int> requestNextPage;
   final VoidCallback onTryAgain;
   final VoidCallback addComment;
@@ -59,7 +61,7 @@ class _CommentListPageState extends State<CommentListPage>
       _commentListController.value = PagingState(
         nextPageKey: listingState.nextOffset,
         error: listingState.error,
-        itemList: listingState.commentList,
+        itemList: listingState.list,
       );
     });
 
