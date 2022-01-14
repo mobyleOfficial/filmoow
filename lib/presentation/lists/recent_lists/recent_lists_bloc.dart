@@ -1,39 +1,47 @@
+import 'package:domain/model/content_list.dart';
 import 'package:domain/use_case/get_recent_lists_use_case.dart';
-import 'package:filmoow/presentation/common/subscription_holder.dart';
-import 'package:filmoow/presentation/lists/recent_lists/state/recent_lists_state.dart';
+import 'package:filmoow/presentation/common/pagination/pagination_bloc.dart';
+import 'package:filmoow/presentation/common/pagination/pagination_state.dart';
 import 'package:rxdart/rxdart.dart';
 
-class RecentListsBloc with SubscriptionHolder {
+class RecentListsBloc
+    extends PaginationBloc<ContentList, PaginationListingError> {
   RecentListsBloc({
     required this.getRecentListsUseCase,
   }) {
-    MergeStream([
-      _getRecentLists(),
-    ]).listen(_onNewState.add);
+    MergeStream(
+      [
+        onNexPageRequestSubject.stream.flatMap(_getRecentLists),
+      ],
+    ).listen(onNextStateSubject.add).addTo(subscriptions);
   }
 
   final GetRecentListsUseCase getRecentListsUseCase;
 
-  final BehaviorSubject<RecentListsState> _onNewState =
-      BehaviorSubject.seeded(Loading());
-
-  Stream<RecentListsState> get onNewState => _onNewState;
-
-  Stream<RecentListsState> _getRecentLists() async* {
-    yield Loading();
+  Stream<PaginationListingState<ContentList, PaginationListingError>>
+      _getRecentLists(int offset) async* {
+    final lastListingState = onNextStateSubject.value;
 
     try {
-      final listsListing = await getRecentListsUseCase(1);
+      if (lastListingState.list != null) {
+        page++;
+      }
 
-      yield Success(
-        lists: listsListing.lists,
+      final listsListing = await getRecentListsUseCase(page);
+
+      yield PaginationListingState<ContentList, PaginationListingError>(
+        nextOffset: listsListing.hasNext ? page : null,
+        list: [
+          ...lastListingState.list ?? [],
+          ...listsListing.lists,
+        ],
       );
     } catch (error) {
-      yield Error();
+      yield PaginationListingState<ContentList, PaginationListingError>(
+        error: PaginationListingError(),
+        nextOffset: lastListingState.nextOffset,
+        list: lastListingState.list,
+      );
     }
-  }
-
-  void dispose() {
-    _onNewState.close();
   }
 }

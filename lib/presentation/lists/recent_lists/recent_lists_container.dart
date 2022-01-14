@@ -1,8 +1,6 @@
 import 'package:domain/use_case/get_recent_lists_use_case.dart';
-import 'package:filmoow/presentation/common/async_snapshot_response_view.dart';
 import 'package:filmoow/presentation/lists/recent_lists/recent_lists_bloc.dart';
 import 'package:filmoow/presentation/lists/recent_lists/recent_lists_page.dart';
-import 'package:filmoow/presentation/lists/recent_lists/state/recent_lists_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,17 +32,8 @@ class RecentListsContainer extends StatelessWidget {
   final RecentListsBloc bloc;
 
   @override
-  Widget build(BuildContext context) => StreamBuilder<RecentListsState>(
-        stream: bloc.onNewState,
-        builder: (_, snapshot) =>
-            AsyncSnapshotResponseView<Loading, Success, Error>(
-          snapshot: snapshot,
-          successWidgetBuilder: (success) => RecentListsPage(
-            lists: success.lists,
-          ),
-          errorWidgetBuilder: (error) {
-            return Container();
-          },
-        ),
-      );
+  Widget build(BuildContext context) => RecentListsPage(
+    onNextCommentListState: bloc.onNextState,
+    requestNextPage: bloc.requestNextPage,
+  );
 }

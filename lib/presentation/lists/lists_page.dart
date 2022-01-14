@@ -40,11 +40,11 @@ class _ListPageState extends State<ListPage> with TickerProviderStateMixin {
             tabs: const [
               Padding(
                 padding: EdgeInsets.all(Sizes.dp8),
-                child: Text('Geral'),
+                child: Text('Recentes'),
               ),
               Padding(
                 padding: EdgeInsets.all(Sizes.dp8),
-                child: Text('Popular'),
+                child: Text('Populares'),
               ),
               Padding(
                 padding: EdgeInsets.all(Sizes.dp8),
