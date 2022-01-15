@@ -1,4 +1,3 @@
-import 'package:domain/model/content_list.dart';
 import 'package:domain/model/lists_listing.dart';
 
 abstract class ListsRepository {

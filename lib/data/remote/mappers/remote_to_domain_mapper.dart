@@ -6,6 +6,7 @@ import 'package:domain/model/content_classification.dart';
 import 'package:domain/model/content_detail.dart';
 import 'package:domain/model/content_list.dart';
 import 'package:domain/model/content_list_stats.dart';
+import 'package:domain/model/lists_listing.dart';
 import 'package:domain/model/movie.dart';
 import 'package:domain/model/news.dart';
 import 'package:domain/model/news_stats.dart';
@@ -32,7 +33,6 @@ import 'package:filmoow/data/remote/model/series_remote_model.dart';
 import 'package:filmoow/data/remote/model/tv_show_remote_model.dart';
 import 'package:filmoow/data/remote/model/user_information_remote_model.dart';
 import 'package:filmoow/data/remote/model/user_remote_model.dart';
-import 'package:domain/model/lists_listing.dart';
 
 extension MovieDomainToRemoteMapper on MovieRemoteModel {
   Movie toDomain() => Movie(

@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:filmoow/data/remote/data_source/lists/lists_remote_data_source.dart';
-import 'package:filmoow/data/remote/model/content_list_remote_model.dart';
 import 'package:filmoow/data/remote/model/lists_listing_remote_model.dart';
 
 class ListsRemoteDataSourceImpl implements ListsRemoteDataSource {

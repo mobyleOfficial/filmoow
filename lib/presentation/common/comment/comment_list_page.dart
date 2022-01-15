@@ -1,7 +1,6 @@
 import 'package:action_handler/action_handler.dart';
 import 'package:domain/model/comment.dart';
 import 'package:filmoow/presentation/common/comment/action/comment_list_actions.dart';
-import 'package:filmoow/presentation/common/comment/state/comment_list_state.dart';
 import 'package:filmoow/presentation/common/comment/widget/comment_card.dart';
 import 'package:filmoow/presentation/common/form_text_field/edit_text.dart';
 import 'package:filmoow/presentation/common/form_text_field/text_input_status.dart';

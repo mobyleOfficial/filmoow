@@ -1,4 +1,3 @@
-import 'package:domain/model/content_list.dart';
 import 'package:domain/model/lists_listing.dart';
 import 'package:domain/repository/lists_repository.dart';
 import 'package:filmoow/data/remote/data_source/lists/lists_remote_data_source.dart';
