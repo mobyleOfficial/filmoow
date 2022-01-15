@@ -31,15 +31,9 @@ class ListsRemoteDataSourceImpl implements ListsRemoteDataSource {
   }
 
   @override
-  Future<List<ContentListRemoteModel>> getTrendingWeekList() async {
-    final response = await dio.get('/lists/trending');
+  Future<ListsListingRemoteModel> getTrendingWeekList(int page) async {
+    final response = await dio.get('/lists/trending?page=$page');
 
-    final popularList = (response.data as List)
-        .map(
-          (movie) => ContentListRemoteModel.fromJson(movie),
-    )
-        .toList();
-
-    return popularList;
+    return ListsListingRemoteModel.fromJson(response.data);
   }
 }

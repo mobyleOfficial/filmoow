@@ -32,13 +32,9 @@ class ListsRepositoryImpl implements ListsRepository {
   }
 
   @override
-  Future<List<ContentList>> getTrendingWeekList() async {
-    final trendingList = await remoteDataSource.getTrendingWeekList();
+  Future<ListsListing> getTrendingWeekList(int page) async {
+    final trendingList = await remoteDataSource.getTrendingWeekList(page);
 
-    return trendingList
-        .map(
-          (list) => list.toDomain(),
-        )
-        .toList();
+    return trendingList.toDomain();
   }
 }

@@ -232,8 +232,8 @@ class FilmoowGeneralProvider extends StatelessWidget {
             repository: repository,
           ),
         ),
-        ProxyProvider<ListsRepository, GetTrendingListUseCase>(
-          update: (_, repository, __) => GetTrendingListUseCase(
+        ProxyProvider<ListsRepository, GetTrendingListsUseCase>(
+          update: (_, repository, __) => GetTrendingListsUseCase(
             repository: repository,
           ),
         ),
