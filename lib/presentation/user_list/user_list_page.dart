@@ -1,5 +1,6 @@
 import 'package:domain/model/user.dart';
 import 'package:filmoow/presentation/common/pagination/pagination_state.dart';
+import 'package:filmoow/presentation/common/remote_image.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -11,7 +12,7 @@ class UserListPage extends StatefulWidget {
   }) : super(key: key);
 
   final Stream<PaginationListingState<User, PaginationListingError>>
-  onNextUserListState;
+      onNextUserListState;
   final ValueChanged<int> requestNextPage;
 
   @override
@@ -19,15 +20,15 @@ class UserListPage extends StatefulWidget {
 }
 
 class _UserListPageState extends State<UserListPage> {
-  final PagingController<int, User> _recentListController =
-  PagingController(firstPageKey: 0);
+  final PagingController<int, User> _userListController =
+      PagingController(firstPageKey: 0);
 
   @override
   void initState() {
-    _recentListController.addPageRequestListener(widget.requestNextPage);
+    _userListController.addPageRequestListener(widget.requestNextPage);
 
     widget.onNextUserListState.listen((listingState) {
-      _recentListController.value = PagingState(
+      _userListController.value = PagingState(
         nextPageKey: listingState.nextOffset,
         error: listingState.error,
         itemList: listingState.list,
@@ -38,20 +39,71 @@ class _UserListPageState extends State<UserListPage> {
   }
 
   @override
-  Widget build(BuildContext context) => PagedListView<int, User>(
-    pagingController: _recentListController,
-    builderDelegate: PagedChildBuilderDelegate(
-      itemBuilder: (_, user, index) => Padding(
-        padding: EdgeInsets.only(
-          left: 10,
-          right: 10,
-          top: 20,
-          bottom: index == 0 ? 5 : 10,
-        ),
-        child: Text(
-          user.name
-        )
-      ),
-    ),
-  );
+  Widget build(BuildContext context) => CustomScrollView(
+        slivers: [
+          PagedSliverGrid<int, User>(
+            pagingController: _userListController,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+            ),
+            builderDelegate: PagedChildBuilderDelegate(
+              itemBuilder: (_, user, index) => InkWell(
+                onTap: () {},
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: 10,
+                    right: 10,
+                    top: 20,
+                    bottom: index == 0 ? 5 : 10,
+                  ),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: RemoteImage(
+                          width: 70,
+                          height: 150,
+                          imageUrl: user.photoUrl,
+                        ),
+                      ),
+                      Text(user.name),
+                    ],
+                  ),
+                ),
+              ),
+              firstPageErrorIndicatorBuilder: (_) => Container(),
+              newPageErrorIndicatorBuilder: (_) => TextButton(
+                onPressed: () {},
+                child: const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(
+                      8,
+                    ),
+                    child: Icon(
+                      Icons.refresh_outlined,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+
+// @override
+// Widget build(BuildContext context) => PagedListView<int, User>(
+//   pagingController: _recentListController,
+//   builderDelegate: PagedChildBuilderDelegate(
+//     itemBuilder: (_, user, index) => Padding(
+//       padding: EdgeInsets.only(
+//         left: 10,
+//         right: 10,
+//         top: 20,
+//         bottom: index == 0 ? 5 : 10,
+//       ),
+//       child: Text(
+//         user.name
+//       )
+//     ),
+//   ),
+// );
 }
