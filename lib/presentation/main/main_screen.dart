@@ -62,7 +62,7 @@ class _MainScreenState extends State<MainScreen> {
 
       BottomNavigationTab(
         bottomNavigationBarItem: const BottomNavigationBarItem(
-          label: 'POKÉMON LIST',
+          label: 'Conteúdos',
           activeIcon: IconTheme(
             data: IconThemeData(
               color: Colors.black,
@@ -81,7 +81,7 @@ class _MainScreenState extends State<MainScreen> {
 
       BottomNavigationTab(
         bottomNavigationBarItem: const BottomNavigationBarItem(
-          label: 'POKÉMON LIST',
+          label: 'Usuários',
           activeIcon: IconTheme(
             data: IconThemeData(
               color: Colors.black,

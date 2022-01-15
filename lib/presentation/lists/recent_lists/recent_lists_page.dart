@@ -42,14 +42,20 @@ class _RecentListsPageState extends State<RecentListsPage> {
   Widget build(BuildContext context) => PagedListView<int, ContentList>(
         pagingController: _recentListController,
         builderDelegate: PagedChildBuilderDelegate(
-          itemBuilder: (_, list, index) => ListsCard(
-            name: list.name,
-            imageList: list.imagesList,
-            isLast: false,
-            listSize: list.stats.listSize,
-            likes: list.stats.likesQuantity,
-            comments: list.stats.commentsQuantity,
-            creation: '',
+          itemBuilder: (_, list, index) => Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: index == 0 ? 24 : 4,
+            ),
+            child: ListsCard(
+              name: list.name,
+              imageList: list.imagesList,
+              isLast: true,
+              listSize: list.stats.listSize,
+              likes: list.stats.likesQuantity,
+              comments: list.stats.commentsQuantity,
+              creation: '',
+            ),
           ),
         ),
       );
