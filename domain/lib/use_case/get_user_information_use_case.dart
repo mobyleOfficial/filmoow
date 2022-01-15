@@ -11,5 +11,5 @@ class GetUserInformationUseCase extends UseCaseImpl<void, UserInformation> {
 
   @override
   Future<UserInformation> getRawFuture({void params}) =>
-      repository.getUserInformation();
+      repository.getUserProfile();
 }

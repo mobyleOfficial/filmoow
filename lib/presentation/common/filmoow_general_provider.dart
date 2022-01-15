@@ -20,6 +20,7 @@ import 'package:domain/use_case/get_popular_tv_show_use_case.dart';
 import 'package:domain/use_case/get_recent_lists_use_case.dart';
 import 'package:domain/use_case/get_treding_lists_use_case.dart';
 import 'package:domain/use_case/get_user_information_use_case.dart';
+import 'package:domain/use_case/get_users_lists_use_case.dart';
 import 'package:domain/use_case/sign_in_use_case.dart';
 import 'package:filmoow/data/local/secure/auth/auth_secure_data_source.dart';
 import 'package:filmoow/data/local/secure/auth/auth_secure_data_source_impl.dart';
@@ -47,6 +48,7 @@ import 'package:filmoow/presentation/main/main_screen.dart';
 import 'package:filmoow/presentation/profile/filmow_sign_in/filmow_sign_in_container.dart';
 import 'package:filmoow/presentation/profile/profile/profile_container.dart';
 import 'package:filmoow/presentation/profile/sign_in/sign_in_container.dart';
+import 'package:filmoow/presentation/user_list/user_list_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -242,6 +244,11 @@ class FilmoowGeneralProvider extends StatelessWidget {
             repository: repository,
           ),
         ),
+        ProxyProvider<UserRepository, GetUserListsUseCase>(
+          update: (_, repository, __) => GetUserListsUseCase(
+            repository: repository,
+          ),
+        ),
       ];
 
   List<SingleChildWidget> _buildRouteFactory() => [
@@ -322,6 +329,13 @@ class FilmoowGeneralProvider extends StatelessWidget {
               return MaterialPageRoute(
                 settings: settings,
                 builder: (_) => CommentListContainer.create(id),
+              );
+            }
+
+            if (settings.name == RouteNameBuilder.getUserListRoute()) {
+              return MaterialPageRoute(
+                settings: settings,
+                builder: (_) => UserListContainer.create(),
               );
             }
 

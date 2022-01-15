@@ -6,13 +6,13 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class RecentListsPage extends StatefulWidget {
   const RecentListsPage({
-    required this.onNextCommentListState,
+    required this.onNextRecentListState,
     required this.requestNextPage,
     Key? key,
   }) : super(key: key);
 
   final Stream<PaginationListingState<ContentList, PaginationListingError>>
-      onNextCommentListState;
+  onNextRecentListState;
   final ValueChanged<int> requestNextPage;
 
   @override
@@ -27,7 +27,7 @@ class _RecentListsPageState extends State<RecentListsPage> {
   void initState() {
     _recentListController.addPageRequestListener(widget.requestNextPage);
 
-    widget.onNextCommentListState.listen((listingState) {
+    widget.onNextRecentListState.listen((listingState) {
       _recentListController.value = PagingState(
         nextPageKey: listingState.nextOffset,
         error: listingState.error,

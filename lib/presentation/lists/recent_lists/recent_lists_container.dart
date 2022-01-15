@@ -33,7 +33,7 @@ class RecentListsContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => RecentListsPage(
-    onNextCommentListState: bloc.onNextState,
+    onNextRecentListState: bloc.onNextState,
     requestNextPage: bloc.requestNextPage,
   );
 }

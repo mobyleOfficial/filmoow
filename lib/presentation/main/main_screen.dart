@@ -95,7 +95,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ),
         navigatorKey: GlobalKey<NavigatorState>(),
-        initialRouteName: RouteNameBuilder.getNewsRoute(),
+        initialRouteName: RouteNameBuilder.getUserListRoute(),
       ),
 
       BottomNavigationTab(
