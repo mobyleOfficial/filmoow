@@ -21,8 +21,8 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
         .map(
           (movie) => MovieRemoteModel.fromJson(movie),
         )
-        .toList();
-      //..shuffle();
+        .toList()
+      ..shuffle();
   }
 
   @override

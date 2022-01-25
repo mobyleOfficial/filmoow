@@ -33,7 +33,7 @@ class TrendingListsContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => TrendingListsPage(
-    onNextCommentListState: bloc.onNextState,
+    onNextListState: bloc.onNextState,
     requestNextPage: bloc.requestNextPage,
   );
 }

@@ -41,7 +41,8 @@ import 'package:filmoow/infrastructure/remote/auth_interceptor.dart';
 import 'package:filmoow/infrastructure/remote/custom_dio.dart';
 import 'package:filmoow/infrastructure/routes/route_name_builder.dart';
 import 'package:filmoow/presentation/common/comment/comment_list_container.dart';
-import 'package:filmoow/presentation/content/content_detail_container.dart';
+import 'package:filmoow/presentation/content/content_container.dart';
+import 'package:filmoow/presentation/content/content_detail/content_detail_container.dart';
 import 'package:filmoow/presentation/home/home_container.dart';
 import 'package:filmoow/presentation/lists/lists_container.dart';
 import 'package:filmoow/presentation/main/main_screen.dart';
@@ -54,6 +55,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:domain/use_case/get_movie_list_use_case.dart';
 
 class FilmoowGeneralProvider extends StatelessWidget {
   const FilmoowGeneralProvider(
@@ -249,6 +251,11 @@ class FilmoowGeneralProvider extends StatelessWidget {
             repository: repository,
           ),
         ),
+        ProxyProvider<ContentRepository, GetMovieListUseCase>(
+          update: (_, repository, __) => GetMovieListUseCase(
+            repository: repository,
+          ),
+        ),
       ];
 
   List<SingleChildWidget> _buildRouteFactory() => [
@@ -271,9 +278,7 @@ class FilmoowGeneralProvider extends StatelessWidget {
             if (settings.name == RouteNameBuilder.getContentRoute()) {
               return MaterialPageRoute(
                 settings: settings,
-                builder: (_) => const Scaffold(
-                  body: Text('CONTENT'),
-                ),
+                builder: (_) => ContentContainer.create(),
               );
             }
 

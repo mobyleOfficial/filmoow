@@ -6,8 +6,8 @@ import 'package:domain/use_case/change_seen_status_use_case.dart';
 import 'package:domain/use_case/get_comment_list_use_case.dart';
 import 'package:domain/use_case/get_content_detail_use_case.dart';
 import 'package:filmoow/presentation/common/subscription_holder.dart';
-import 'package:filmoow/presentation/content/state/content_detail_state.dart';
-import 'package:filmoow/presentation/content/state/seen_status_state.dart';
+import 'package:filmoow/presentation/content/content_detail/state/content_detail_state.dart';
+import 'package:filmoow/presentation/content/content_detail/state/seen_status_state.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ContentDetailBloc with SubscriptionHolder {

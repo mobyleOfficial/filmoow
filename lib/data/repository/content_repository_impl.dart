@@ -1,5 +1,7 @@
 import 'package:domain/model/comment_listing.dart';
 import 'package:domain/model/content_detail.dart';
+import 'package:domain/model/movie.dart';
+import 'package:domain/model/movie_listing.dart';
 import 'package:domain/model/seen_status.dart';
 import 'package:domain/repository/content_repository.dart';
 import 'package:filmoow/data/remote/data_source/content/content_remote_data_source.dart';
@@ -38,4 +40,11 @@ class ContentRepositoryImpl implements ContentRepository {
   @override
   Future<void> addComment(String id, String comment) =>
       dataSource.addComment(id, comment);
+
+  @override
+  Future<MovieListing> getMovieList(int page) async{
+    final movieListingRM = await dataSource.getMovieList(page);
+
+    return Future.value(movieListingRM.toDomain());
+  }
 }

@@ -39,55 +39,43 @@ class _UserListPageState extends State<UserListPage> {
   }
 
   @override
-  Widget build(BuildContext context) => CustomScrollView(
-        slivers: [
-          PagedSliverGrid<int, User>(
-            pagingController: _userListController,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
+  Widget build(BuildContext context) => PagedGridView<int, User>(
+    pagingController: _userListController,
+    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 3,
+    ),
+    builderDelegate: PagedChildBuilderDelegate(
+      itemBuilder: (_, user, index) => GestureDetector(
+        onTap: () {},
+        child: Column(
+          children: [
+            Expanded(
+              child: RemoteImage(
+                width: 70,
+                height: 150,
+                imageUrl: user.photoUrl,
+              ),
             ),
-            builderDelegate: PagedChildBuilderDelegate(
-              itemBuilder: (_, user, index) => InkWell(
-                onTap: () {},
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    left: 10,
-                    right: 10,
-                    top: 20,
-                    bottom: index == 0 ? 5 : 10,
-                  ),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: RemoteImage(
-                          width: 70,
-                          height: 150,
-                          imageUrl: user.photoUrl,
-                        ),
-                      ),
-                      Text(user.name),
-                    ],
-                  ),
-                ),
-              ),
-              firstPageErrorIndicatorBuilder: (_) => Container(),
-              newPageErrorIndicatorBuilder: (_) => TextButton(
-                onPressed: () {},
-                child: const Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(
-                      8,
-                    ),
-                    child: Icon(
-                      Icons.refresh_outlined,
-                    ),
-                  ),
-                ),
-              ),
+            Text(user.name),
+          ],
+        ),
+      ),
+      firstPageErrorIndicatorBuilder: (_) => Container(),
+      newPageErrorIndicatorBuilder: (_) => TextButton(
+        onPressed: () {},
+        child: const Center(
+          child: Padding(
+            padding: EdgeInsets.all(
+              8,
+            ),
+            child: Icon(
+              Icons.refresh_outlined,
             ),
           ),
-        ],
-      );
+        ),
+      ),
+    ),
+  );
 
 // @override
 // Widget build(BuildContext context) => PagedListView<int, User>(

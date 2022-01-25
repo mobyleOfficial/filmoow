@@ -12,7 +12,7 @@ import 'package:filmoow/presentation/common/comment/widget/comment_card.dart';
 import 'package:filmoow/presentation/common/filmoow_assets.dart';
 import 'package:filmoow/presentation/common/remote_image.dart';
 import 'package:filmoow/presentation/common/sizes.dart';
-import 'package:filmoow/presentation/content/state/seen_status_state.dart';
+import 'package:filmoow/presentation/content/content_detail/state/seen_status_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

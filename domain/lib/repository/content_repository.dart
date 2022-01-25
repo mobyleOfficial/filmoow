@@ -1,5 +1,6 @@
 import 'package:domain/model/comment_listing.dart';
 import 'package:domain/model/content_detail.dart';
+import 'package:domain/model/movie_listing.dart';
 import 'package:domain/model/seen_status.dart';
 
 abstract class ContentRepository {
@@ -10,4 +11,6 @@ abstract class ContentRepository {
   Future<CommentListing> getCommentList(int page, String id);
 
   Future<void> addComment(String id, String comment);
+
+  Future<MovieListing> getMovieList(int page);
 }

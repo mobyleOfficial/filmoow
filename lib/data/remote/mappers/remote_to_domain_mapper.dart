@@ -8,6 +8,7 @@ import 'package:domain/model/content_list.dart';
 import 'package:domain/model/content_list_stats.dart';
 import 'package:domain/model/lists_listing.dart';
 import 'package:domain/model/movie.dart';
+import 'package:domain/model/movie_listing.dart';
 import 'package:domain/model/news.dart';
 import 'package:domain/model/news_stats.dart';
 import 'package:domain/model/recommended_content.dart';
@@ -26,6 +27,7 @@ import 'package:filmoow/data/remote/model/content_detail_remote_model.dart';
 import 'package:filmoow/data/remote/model/content_list_remote_model.dart';
 import 'package:filmoow/data/remote/model/content_list_stats_remote_model.dart';
 import 'package:filmoow/data/remote/model/lists_listing_remote_model.dart';
+import 'package:filmoow/data/remote/model/movie_listing_remote_model.dart';
 import 'package:filmoow/data/remote/model/movie_remote_model.dart';
 import 'package:filmoow/data/remote/model/news_remote_model.dart';
 import 'package:filmoow/data/remote/model/news_stats_remote_model.dart';
@@ -244,15 +246,26 @@ extension CommentListingRemoteToDomain on CommentListingRemoteModel {
       );
 }
 
+extension MovieListingRemoteToDomain on MovieListingRemoteModel {
+  MovieListing toDomain() => MovieListing(
+        hasNext: hasNext,
+        list: list
+            .map(
+              (movie) => movie.toDomain(),
+            )
+            .toList(),
+      );
+}
+
 extension UserListingRemoteToDomain on UserListingRemoteModel {
   UserListing toDomain() => UserListing(
-    hasNext: hasNext,
-    userList: userList
-        .map(
-          (user) => user.toDomain(),
-    )
-        .toList(),
-  );
+        hasNext: hasNext,
+        userList: userList
+            .map(
+              (user) => user.toDomain(),
+            )
+            .toList(),
+      );
 }
 
 extension CommentRemoteToDomain on CommentRemoteModel {
