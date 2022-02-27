@@ -14,6 +14,7 @@ import 'package:domain/model/news_stats.dart';
 import 'package:domain/model/recommended_content.dart';
 import 'package:domain/model/seen_status.dart';
 import 'package:domain/model/series.dart';
+import 'package:domain/model/series_listing.dart';
 import 'package:domain/model/tv_show.dart';
 import 'package:domain/model/user.dart';
 import 'package:domain/model/user_information.dart';
@@ -32,6 +33,7 @@ import 'package:filmoow/data/remote/model/movie_remote_model.dart';
 import 'package:filmoow/data/remote/model/news_remote_model.dart';
 import 'package:filmoow/data/remote/model/news_stats_remote_model.dart';
 import 'package:filmoow/data/remote/model/recommended_content_remote_model.dart';
+import 'package:filmoow/data/remote/model/series_listing_remote_model.dart';
 import 'package:filmoow/data/remote/model/series_remote_model.dart';
 import 'package:filmoow/data/remote/model/tv_show_remote_model.dart';
 import 'package:filmoow/data/remote/model/user_information_remote_model.dart';
@@ -303,6 +305,17 @@ extension ListListingRemoteToDomain on ListsListingRemoteModel {
         lists: lists
             .map(
               (list) => list.toDomain(),
+            )
+            .toList(),
+      );
+}
+
+extension SeriesListingRemoteToDomain on SeriesListingRemoteModel {
+  SeriesListing toDomain() => SeriesListing(
+        hasNext: hasNext,
+        list: list
+            .map(
+              (series) => series.toDomain(),
             )
             .toList(),
       );

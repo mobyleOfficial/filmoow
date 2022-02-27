@@ -76,22 +76,4 @@ class _UserListPageState extends State<UserListPage> {
       ),
     ),
   );
-
-// @override
-// Widget build(BuildContext context) => PagedListView<int, User>(
-//   pagingController: _recentListController,
-//   builderDelegate: PagedChildBuilderDelegate(
-//     itemBuilder: (_, user, index) => Padding(
-//       padding: EdgeInsets.only(
-//         left: 10,
-//         right: 10,
-//         top: 20,
-//         bottom: index == 0 ? 5 : 10,
-//       ),
-//       child: Text(
-//         user.name
-//       )
-//     ),
-//   ),
-// );
 }

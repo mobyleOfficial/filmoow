@@ -9,5 +9,13 @@ class ContentContainer extends StatelessWidget {
   static Widget create() => const ContentContainer();
 
   @override
-  Widget build(BuildContext context) => ContentPage();
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          title: const Center(
+            child: Text('Conteúdos'),
+          ),
+        ),
+        body: const ContentPage(),
+      );
 }

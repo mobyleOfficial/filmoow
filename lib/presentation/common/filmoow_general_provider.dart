@@ -18,6 +18,7 @@ import 'package:domain/use_case/get_popular_movie_use_case.dart';
 import 'package:domain/use_case/get_popular_series_use_case.dart';
 import 'package:domain/use_case/get_popular_tv_show_use_case.dart';
 import 'package:domain/use_case/get_recent_lists_use_case.dart';
+import 'package:domain/use_case/get_series_list_use_case.dart';
 import 'package:domain/use_case/get_treding_lists_use_case.dart';
 import 'package:domain/use_case/get_user_information_use_case.dart';
 import 'package:domain/use_case/get_users_lists_use_case.dart';
@@ -253,6 +254,11 @@ class FilmoowGeneralProvider extends StatelessWidget {
         ),
         ProxyProvider<ContentRepository, GetMovieListUseCase>(
           update: (_, repository, __) => GetMovieListUseCase(
+            repository: repository,
+          ),
+        ),
+        ProxyProvider<ContentRepository, GetSeriesListUseCase>(
+          update: (_, repository, __) => GetSeriesListUseCase(
             repository: repository,
           ),
         ),

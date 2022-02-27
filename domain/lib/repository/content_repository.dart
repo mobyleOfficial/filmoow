@@ -2,6 +2,7 @@ import 'package:domain/model/comment_listing.dart';
 import 'package:domain/model/content_detail.dart';
 import 'package:domain/model/movie_listing.dart';
 import 'package:domain/model/seen_status.dart';
+import 'package:domain/model/series_listing.dart';
 
 abstract class ContentRepository {
   Future<ContentDetail> getContentDetail(String id);
@@ -13,4 +14,6 @@ abstract class ContentRepository {
   Future<void> addComment(String id, String comment);
 
   Future<MovieListing> getMovieList(int page);
+
+  Future<SeriesListing> getSeriesList(int page);
 }

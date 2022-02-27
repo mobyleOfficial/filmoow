@@ -3,6 +3,7 @@ import 'package:domain/model/content_detail.dart';
 import 'package:domain/model/movie.dart';
 import 'package:domain/model/movie_listing.dart';
 import 'package:domain/model/seen_status.dart';
+import 'package:domain/model/series_listing.dart';
 import 'package:domain/repository/content_repository.dart';
 import 'package:filmoow/data/remote/data_source/content/content_remote_data_source.dart';
 import 'package:filmoow/data/remote/mappers/domain_to_remote_mapper.dart';
@@ -46,5 +47,12 @@ class ContentRepositoryImpl implements ContentRepository {
     final movieListingRM = await dataSource.getMovieList(page);
 
     return Future.value(movieListingRM.toDomain());
+  }
+
+  @override
+  Future<SeriesListing> getSeriesList(int page) async{
+    final seriesListingRM = await dataSource.getSeriesList(page);
+
+    return Future.value(seriesListingRM.toDomain());
   }
 }

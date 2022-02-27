@@ -3,6 +3,7 @@ import 'package:filmoow/data/remote/data_source/content/content_remote_data_sour
 import 'package:filmoow/data/remote/model/comment_listing_remote_model.dart';
 import 'package:filmoow/data/remote/model/content_detail_remote_model.dart';
 import 'package:filmoow/data/remote/model/movie_listing_remote_model.dart';
+import 'package:filmoow/data/remote/model/series_listing_remote_model.dart';
 
 class ContentRemoteDataSourceImpl implements ContentRemoteDataSource {
   const ContentRemoteDataSourceImpl({
@@ -51,5 +52,12 @@ class ContentRemoteDataSourceImpl implements ContentRemoteDataSource {
     final response = await dio.get('/content/movieList?page=$page');
 
     return MovieListingRemoteModel.fromJson(response.data);
+  }
+
+  @override
+  Future<SeriesListingRemoteModel> getSeriesList(int page) async{
+    final response = await dio.get('/content/seriesList?page=$page');
+
+    return SeriesListingRemoteModel.fromJson(response.data);
   }
 }
