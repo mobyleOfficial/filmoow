@@ -6,13 +6,12 @@ part of 'actor_remote_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ActorRemoteModel _$ActorRemoteModelFromJson(Map<String, dynamic> json) {
-  return ActorRemoteModel(
-    id: json['id'] as String,
-    name: json['name'] as String,
-    photoUrl: json['photoUrl'] as String,
-  );
-}
+ActorRemoteModel _$ActorRemoteModelFromJson(Map<String, dynamic> json) =>
+    ActorRemoteModel(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      photoUrl: json['photoUrl'] as String,
+    );
 
 Map<String, dynamic> _$ActorRemoteModelToJson(ActorRemoteModel instance) =>
     <String, dynamic>{

@@ -1,4 +1,3 @@
-import 'package:domain/model/movie.dart';
 import 'package:domain/model/series.dart';
 
 class SeriesListing {

@@ -7,17 +7,16 @@ part of 'user_information_remote_model.dart';
 // **************************************************************************
 
 UserInformationRemoteModel _$UserInformationRemoteModelFromJson(
-    Map<String, dynamic> json) {
-  return UserInformationRemoteModel(
-    name: json['name'] as String,
-    userName: json['userName'] as String,
-    imageUrl: json['imageUrl'] as String,
-    timeSpent: json['timeSpent'] as String,
-    seenNumber: json['seenNumber'] as int,
-    commentNumber: json['commentNumber'] as int,
-    listNumber: json['listNumber'] as int,
-  );
-}
+        Map<String, dynamic> json) =>
+    UserInformationRemoteModel(
+      name: json['name'] as String,
+      userName: json['userName'] as String,
+      imageUrl: json['imageUrl'] as String,
+      timeSpent: json['timeSpent'] as String,
+      seenNumber: json['seenNumber'] as int,
+      commentNumber: json['commentNumber'] as int,
+      listNumber: json['listNumber'] as int,
+    );
 
 Map<String, dynamic> _$UserInformationRemoteModelToJson(
         UserInformationRemoteModel instance) =>

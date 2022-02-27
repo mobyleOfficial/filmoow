@@ -3,6 +3,7 @@ import 'package:domain/model/content_detail.dart';
 import 'package:domain/model/movie_listing.dart';
 import 'package:domain/model/seen_status.dart';
 import 'package:domain/model/series_listing.dart';
+import 'package:domain/model/tv_show_listing.dart';
 
 abstract class ContentRepository {
   Future<ContentDetail> getContentDetail(String id);
@@ -16,4 +17,6 @@ abstract class ContentRepository {
   Future<MovieListing> getMovieList(int page);
 
   Future<SeriesListing> getSeriesList(int page);
+
+  Future<TvShowListing> getTvShowList(int page);
 }

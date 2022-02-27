@@ -7,18 +7,18 @@ part of 'content_list_remote_model.dart';
 // **************************************************************************
 
 ContentListRemoteModel _$ContentListRemoteModelFromJson(
-    Map<String, dynamic> json) {
-  return ContentListRemoteModel(
-    id: json['id'] as String,
-    name: json['name'] as String,
-    stats: ContentListStatsRemoteModel.fromJson(
-        json['stats'] as Map<String, dynamic>),
-    imagesList:
-        (json['imagesList'] as List<dynamic>).map((e) => e as String).toList(),
-    description: json['description'] as String?,
-    owner: json['owner'] as String?,
-  );
-}
+        Map<String, dynamic> json) =>
+    ContentListRemoteModel(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      stats: ContentListStatsRemoteModel.fromJson(
+          json['stats'] as Map<String, dynamic>),
+      imagesList: (json['imagesList'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      description: json['description'] as String?,
+      owner: json['owner'] as String?,
+    );
 
 Map<String, dynamic> _$ContentListRemoteModelToJson(
         ContentListRemoteModel instance) =>

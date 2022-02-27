@@ -7,13 +7,12 @@ part of 'content_list_stats_remote_model.dart';
 // **************************************************************************
 
 ContentListStatsRemoteModel _$ContentListStatsRemoteModelFromJson(
-    Map<String, dynamic> json) {
-  return ContentListStatsRemoteModel(
-    listSize: json['listSize'] as int,
-    likesQuantity: json['likesQuantity'] as int,
-    commentsQuantity: json['commentsQuantity'] as int,
-  );
-}
+        Map<String, dynamic> json) =>
+    ContentListStatsRemoteModel(
+      listSize: json['listSize'] as int,
+      likesQuantity: json['likesQuantity'] as int,
+      commentsQuantity: json['commentsQuantity'] as int,
+    );
 
 Map<String, dynamic> _$ContentListStatsRemoteModelToJson(
         ContentListStatsRemoteModel instance) =>

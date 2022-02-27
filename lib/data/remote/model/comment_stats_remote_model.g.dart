@@ -7,15 +7,14 @@ part of 'comment_stats_remote_model.dart';
 // **************************************************************************
 
 CommentStatsRemoteModel _$CommentStatsRemoteModelFromJson(
-    Map<String, dynamic> json) {
-  return CommentStatsRemoteModel(
-    rating: (json['rating'] as num?)?.toDouble(),
-    likesQuantity: json['likesQuantity'] as int,
-    repliesQuantity: json['repliesQuantity'] as int,
-    hasDislikes: json['hasDislikes'] as bool,
-    hasUserLike: json['hasUserLike'] as bool,
-  );
-}
+        Map<String, dynamic> json) =>
+    CommentStatsRemoteModel(
+      rating: (json['rating'] as num?)?.toDouble(),
+      likesQuantity: json['likesQuantity'] as int,
+      repliesQuantity: json['repliesQuantity'] as int,
+      hasDislikes: json['hasDislikes'] as bool,
+      hasUserLike: json['hasUserLike'] as bool,
+    );
 
 Map<String, dynamic> _$CommentStatsRemoteModelToJson(
         CommentStatsRemoteModel instance) =>

@@ -1,23 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'movie_listing_remote_model.dart';
+part of 'tv_show_listing_remote_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-MovieListingRemoteModel _$MovieListingRemoteModelFromJson(
+TvShowListingRemoteModel _$TvShowListingRemoteModelFromJson(
         Map<String, dynamic> json) =>
-    MovieListingRemoteModel(
-      list: (json['movieList'] as List<dynamic>)
-          .map((e) => MovieRemoteModel.fromJson(e as Map<String, dynamic>))
+    TvShowListingRemoteModel(
+      list: (json['tvShowList'] as List<dynamic>)
+          .map((e) => TvShowRemoteModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       hasNext: json['hasNext'] as bool,
     );
 
-Map<String, dynamic> _$MovieListingRemoteModelToJson(
-        MovieListingRemoteModel instance) =>
+Map<String, dynamic> _$TvShowListingRemoteModelToJson(
+        TvShowListingRemoteModel instance) =>
     <String, dynamic>{
-      'movieList': instance.list,
+      'tvShowList': instance.list,
       'hasNext': instance.hasNext,
     };

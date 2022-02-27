@@ -7,13 +7,12 @@ part of 'recommended_content_remote_model.dart';
 // **************************************************************************
 
 RecommendedContentRemoteModel _$RecommendedContentRemoteModelFromJson(
-    Map<String, dynamic> json) {
-  return RecommendedContentRemoteModel(
-    id: json['id'] as String,
-    name: json['title'] as String,
-    imageUrl: json['imageUrl'] as String,
-  );
-}
+        Map<String, dynamic> json) =>
+    RecommendedContentRemoteModel(
+      id: json['id'] as String,
+      name: json['title'] as String,
+      imageUrl: json['imageUrl'] as String,
+    );
 
 Map<String, dynamic> _$RecommendedContentRemoteModelToJson(
         RecommendedContentRemoteModel instance) =>

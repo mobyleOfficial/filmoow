@@ -6,15 +6,14 @@ part of 'series_remote_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SeriesRemoteModel _$SeriesRemoteModelFromJson(Map<String, dynamic> json) {
-  return SeriesRemoteModel(
-    id: json['id'] as String,
-    name: json['name'] as String,
-    imageUrl: json['image'] as String,
-    score: (json['score'] as num?)?.toDouble(),
-    commentsQuantity: json['commentsQuantity'] as int?,
-  );
-}
+SeriesRemoteModel _$SeriesRemoteModelFromJson(Map<String, dynamic> json) =>
+    SeriesRemoteModel(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      imageUrl: json['image'] as String,
+      score: (json['score'] as num?)?.toDouble(),
+      commentsQuantity: json['commentsQuantity'] as int?,
+    );
 
 Map<String, dynamic> _$SeriesRemoteModelToJson(SeriesRemoteModel instance) =>
     <String, dynamic>{

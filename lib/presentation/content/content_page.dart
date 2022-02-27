@@ -1,6 +1,7 @@
 import 'package:filmoow/presentation/common/sizes.dart';
 import 'package:filmoow/presentation/content/movie_content/movie_content_container.dart';
 import 'package:filmoow/presentation/content/series_content/series_content_container.dart';
+import 'package:filmoow/presentation/content/tv_content/tv_show_content_container.dart';
 import 'package:flutter/material.dart';
 
 class ContentPage extends StatefulWidget {
@@ -64,7 +65,7 @@ class _ContentPageState extends State<ContentPage>
               children: [
                 MovieContentContainer.create(),
                 SeriesContentContainer.create(),
-                const Text('TV'),
+                TvShowContentContainer.create(),
               ],
             ),
           ),

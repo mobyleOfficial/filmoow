@@ -6,15 +6,14 @@ part of 'tv_show_remote_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-TvShowRemoteModel _$TvShowRemoteModelFromJson(Map<String, dynamic> json) {
-  return TvShowRemoteModel(
-    id: json['id'] as String,
-    name: json['name'] as String,
-    imageUrl: json['image'] as String,
-    score: (json['score'] as num?)?.toDouble(),
-    commentsQuantity: json['commentsQuantity'] as int?,
-  );
-}
+TvShowRemoteModel _$TvShowRemoteModelFromJson(Map<String, dynamic> json) =>
+    TvShowRemoteModel(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      imageUrl: json['image'] as String,
+      score: (json['score'] as num?)?.toDouble(),
+      commentsQuantity: json['commentsQuantity'] as int?,
+    );
 
 Map<String, dynamic> _$TvShowRemoteModelToJson(TvShowRemoteModel instance) =>
     <String, dynamic>{
