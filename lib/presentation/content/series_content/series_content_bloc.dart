@@ -13,14 +13,24 @@ class SeriesContentBloc extends PaginationBloc<Series, PaginationListingError> {
     MergeStream(
       [
         onNexPageRequestSubject.stream.flatMap(_getSeriesList),
+        onQuery
+            .debounce(
+              (event) => TimerStream(
+                true,
+                const Duration(seconds: 1),
+              ),
+            )
+            .flatMap(_searchSeriesList),
       ],
     ).listen(onNextStateSubject.add).addTo(subscriptions);
   }
 
   final GetSeriesListUseCase getSeriesListUseCase;
 
-  Stream<PaginationListingState<Series, PaginationListingError>>
-  _getSeriesList(int offset) async* {
+  final BehaviorSubject<String> onQuery = BehaviorSubject<String>.seeded('');
+
+  Stream<PaginationListingState<Series, PaginationListingError>> _getSeriesList(
+      int offset) async* {
     final lastListingState = onNextStateSubject.value;
 
     try {
@@ -28,7 +38,11 @@ class SeriesContentBloc extends PaginationBloc<Series, PaginationListingError> {
         page++;
       }
 
-      final listsListing = await getSeriesListUseCase(page);
+      final listsListing = await getSeriesListUseCase(
+        GetSeriesListUseCaseParams(
+          page: page,
+        ),
+      );
 
       yield PaginationListingState<Series, PaginationListingError>(
         nextOffset: listsListing.hasNext ? page : null,
@@ -44,5 +58,38 @@ class SeriesContentBloc extends PaginationBloc<Series, PaginationListingError> {
         list: lastListingState.list,
       );
     }
+  }
+
+  Stream<PaginationListingState<Series, PaginationListingError>>
+      _searchSeriesList(String query) async* {
+    yield const PaginationListingState<Series, PaginationListingError>();
+
+    try {
+      page = 1;
+      final listsListing = await getSeriesListUseCase(
+        GetSeriesListUseCaseParams(
+          page: page,
+          query: query,
+        ),
+      );
+
+      yield PaginationListingState<Series, PaginationListingError>(
+        list: listsListing.list,
+      );
+    } catch (error) {
+      yield PaginationListingState<Series, PaginationListingError>(
+        error: PaginationListingError(),
+        nextOffset: 0,
+        list: [],
+      );
+    }
+  }
+
+  void onSearch(String query) => onQuery.add(query);
+
+  @override
+  void dispose() {
+    onQuery.close();
+    super.dispose();
   }
 }

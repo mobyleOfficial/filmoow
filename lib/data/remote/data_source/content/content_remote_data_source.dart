@@ -16,9 +16,9 @@ abstract class ContentRemoteDataSource {
 
   Future<void> addComment(String id, String comment);
 
-  Future<MovieListingRemoteModel> getMovieList(int page);
+  Future<MovieListingRemoteModel> getMovieList(int page, String? query);
 
-  Future<SeriesListingRemoteModel> getSeriesList(int page);
+  Future<SeriesListingRemoteModel> getSeriesList(int page, String? query);
 
-  Future<TvShowListingRemoteModel> getTvShowList(int page);
+  Future<TvShowListingRemoteModel> getTvShowList(int page, String? query);
 }

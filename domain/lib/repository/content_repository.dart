@@ -14,9 +14,9 @@ abstract class ContentRepository {
 
   Future<void> addComment(String id, String comment);
 
-  Future<MovieListing> getMovieList(int page);
+  Future<MovieListing> getMovieList(int page, {String? query});
 
-  Future<SeriesListing> getSeriesList(int page);
+  Future<SeriesListing> getSeriesList(int page, {String? query});
 
-  Future<TvShowListing> getTvShowList(int page);
+  Future<TvShowListing> getTvShowList(int page, {String? query});
 }

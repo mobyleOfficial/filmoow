@@ -1,15 +1,20 @@
-class Series {
-  const Series({
-    required this.id,
-    required this.name,
-    required this.imageUrl,
-    this.score,
-    this.commentsQuantity,
-  });
+import 'package:domain/model/content.dart';
+import 'package:domain/model/seen_status.dart';
 
-  final String id;
-  final String name;
-  final String imageUrl;
-  final double? score;
-  final int? commentsQuantity;
+class Series extends Content {
+  Series({
+    required String id,
+    required String name,
+    required String imageUrl,
+    required SeenStatus status,
+    int? commentsQuantity,
+    double? score,
+  }) : super(
+          id: id,
+          name: name,
+          imageUrl: imageUrl,
+          status: status,
+          score: score,
+          commentsQuantity: commentsQuantity,
+        );
 }

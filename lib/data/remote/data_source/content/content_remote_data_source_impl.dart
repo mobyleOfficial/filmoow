@@ -3,8 +3,11 @@ import 'package:filmoow/data/remote/data_source/content/content_remote_data_sour
 import 'package:filmoow/data/remote/model/comment_listing_remote_model.dart';
 import 'package:filmoow/data/remote/model/content_detail_remote_model.dart';
 import 'package:filmoow/data/remote/model/movie_listing_remote_model.dart';
+import 'package:filmoow/data/remote/model/movie_remote_model.dart';
 import 'package:filmoow/data/remote/model/series_listing_remote_model.dart';
+import 'package:filmoow/data/remote/model/series_remote_model.dart';
 import 'package:filmoow/data/remote/model/tv_show_listing_remote_model.dart';
+import 'package:filmoow/data/remote/model/tv_show_remote_model.dart';
 
 class ContentRemoteDataSourceImpl implements ContentRemoteDataSource {
   const ContentRemoteDataSourceImpl({
@@ -49,23 +52,67 @@ class ContentRemoteDataSourceImpl implements ContentRemoteDataSource {
       );
 
   @override
-  Future<MovieListingRemoteModel> getMovieList(int page) async {
-    final response = await dio.get('/content/movieList?page=$page');
+  Future<MovieListingRemoteModel> getMovieList(int page, String? query) async {
+    if ((query ?? '').isNotEmpty) {
+      final response = await dio.get('/content/search?query=$query');
 
-    return MovieListingRemoteModel.fromJson(response.data);
+      return MovieListingRemoteModel(
+        list: (response.data as List<dynamic>)
+            .map(
+              (movie) =>
+                  MovieRemoteModel.fromJson(movie as Map<String, dynamic>),
+            )
+            .toList(),
+        hasNext: false,
+      );
+    } else {
+      final response = await dio.get('/content/movieList?page=$page');
+
+      return MovieListingRemoteModel.fromJson(response.data);
+    }
   }
 
   @override
-  Future<SeriesListingRemoteModel> getSeriesList(int page) async{
-    final response = await dio.get('/content/seriesList?page=$page');
+  Future<SeriesListingRemoteModel> getSeriesList(
+      int page, String? query) async {
+    if ((query ?? '').isNotEmpty) {
+      final response = await dio.get('/content/search?query=$query');
 
-    return SeriesListingRemoteModel.fromJson(response.data);
+      return SeriesListingRemoteModel(
+        list: (response.data as List<dynamic>)
+            .map(
+              (series) =>
+                  SeriesRemoteModel.fromJson(series as Map<String, dynamic>),
+            )
+            .toList(),
+        hasNext: false,
+      );
+    } else {
+      final response = await dio.get('/content/seriesList?page=$page');
+
+      return SeriesListingRemoteModel.fromJson(response.data);
+    }
   }
 
   @override
-  Future<TvShowListingRemoteModel> getTvShowList(int page) async {
-    final response = await dio.get('/content/tvShowList?page=$page');
+  Future<TvShowListingRemoteModel> getTvShowList(
+      int page, String? query) async {
+    if ((query ?? '').isNotEmpty) {
+      final response = await dio.get('/content/search?query=$query');
 
-    return TvShowListingRemoteModel.fromJson(response.data);
+      return TvShowListingRemoteModel(
+        list: (response.data as List<dynamic>)
+            .map(
+              (tvShow) =>
+                  TvShowRemoteModel.fromJson(tvShow as Map<String, dynamic>),
+            )
+            .toList(),
+        hasNext: false,
+      );
+    } else {
+      final response = await dio.get('/content/tvShowList?page=$page');
+
+      return TvShowListingRemoteModel.fromJson(response.data);
+    }
   }
 }

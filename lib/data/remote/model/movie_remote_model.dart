@@ -1,38 +1,29 @@
+import 'package:filmoow/data/remote/model/content_remote_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'movie_remote_model.g.dart';
 
 @JsonSerializable()
-class MovieRemoteModel {
-  const MovieRemoteModel({
-    required this.id,
-    required this.name,
-    required this.imageUrl,
-    this.score,
-    this.commentsQuantity,
-    this.seenStatus,
-  });
+class MovieRemoteModel extends ContentRemoteModel {
+  MovieRemoteModel({
+    required String id,
+    required String name,
+    required String imageUrl,
+    double? score,
+    int? commentsQuantity,
+    String? status,
+  }) : super(
+          id: id,
+          name: name,
+          imageUrl: imageUrl,
+          score: score,
+          commentsQuantity: commentsQuantity,
+          seenStatus: status,
+        );
 
   factory MovieRemoteModel.fromJson(Map<String, dynamic> parsedJson) =>
       _$MovieRemoteModelFromJson(parsedJson);
 
+  @override
   Map<String, dynamic> toJson() => _$MovieRemoteModelToJson(this);
-
-  @JsonKey(name: 'id')
-  final String id;
-
-  @JsonKey(name: 'name')
-  final String name;
-
-  @JsonKey(name: 'image')
-  final String imageUrl;
-
-  @JsonKey(name: 'score')
-  final double? score;
-
-  @JsonKey(name: 'commentsQuantity')
-  final int? commentsQuantity;
-
-  @JsonKey(name: 'seenStatus')
-  final String? seenStatus;
 }

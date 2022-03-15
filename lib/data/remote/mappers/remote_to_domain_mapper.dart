@@ -59,6 +59,8 @@ extension SeriesDomainToRemoteMapper on SeriesRemoteModel {
         name: name,
         imageUrl: imageUrl,
         score: score,
+        status: SeenStatus.notSeen,
+        commentsQuantity: commentsQuantity,
       );
 }
 
@@ -85,6 +87,7 @@ extension TvShowDomainToRemoteMapper on TvShowRemoteModel {
         name: name,
         imageUrl: imageUrl,
         score: score,
+        status: SeenStatus.notSeen,
         commentsQuantity: commentsQuantity,
       );
 }

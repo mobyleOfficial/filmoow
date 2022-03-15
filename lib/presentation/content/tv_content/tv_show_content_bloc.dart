@@ -16,11 +16,21 @@ class TvShowsContentBloc
     MergeStream(
       [
         onNexPageRequestSubject.stream.flatMap(_getTvShowList),
+        onQuery
+            .debounce(
+              (event) => TimerStream(
+                true,
+                const Duration(seconds: 1),
+              ),
+            )
+            .flatMap(_searchTvShowList),
       ],
     ).listen(onNextStateSubject.add).addTo(subscriptions);
   }
 
   final GetTvShowListUseCase getTvShowListUseCase;
+
+  final BehaviorSubject<String> onQuery = BehaviorSubject<String>.seeded('');
 
   Stream<PaginationListingState<TvShow, PaginationListingError>> _getTvShowList(
       int offset) async* {
@@ -31,7 +41,11 @@ class TvShowsContentBloc
         page++;
       }
 
-      final listsListing = await getTvShowListUseCase(page);
+      final listsListing = await getTvShowListUseCase(
+        GetTvShowListUseCaseParams(
+          page: page,
+        ),
+      );
 
       yield PaginationListingState<TvShow, PaginationListingError>(
         nextOffset: listsListing.hasNext ? page : null,
@@ -47,5 +61,38 @@ class TvShowsContentBloc
         list: lastListingState.list,
       );
     }
+  }
+
+  Stream<PaginationListingState<TvShow, PaginationListingError>>
+      _searchTvShowList(String query) async* {
+    yield const PaginationListingState<TvShow, PaginationListingError>();
+
+    try {
+      page = 1;
+      final listsListing = await getTvShowListUseCase(
+        GetTvShowListUseCaseParams(
+          page: page,
+          query: query,
+        ),
+      );
+
+      yield PaginationListingState<TvShow, PaginationListingError>(
+        list: listsListing.list,
+      );
+    } catch (error) {
+      yield PaginationListingState<TvShow, PaginationListingError>(
+        error: PaginationListingError(),
+        nextOffset: 0,
+        list: [],
+      );
+    }
+  }
+
+  void onSearch(String query) => onQuery.add(query);
+
+  @override
+  void dispose() {
+    onQuery.close();
+    super.dispose();
   }
 }

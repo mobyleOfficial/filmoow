@@ -43,22 +43,22 @@ class ContentRepositoryImpl implements ContentRepository {
       dataSource.addComment(id, comment);
 
   @override
-  Future<MovieListing> getMovieList(int page) async {
-    final movieListingRM = await dataSource.getMovieList(page);
+  Future<MovieListing> getMovieList(int page, {String? query}) async {
+    final movieListingRM = await dataSource.getMovieList(page, query);
 
     return Future.value(movieListingRM.toDomain());
   }
 
   @override
-  Future<SeriesListing> getSeriesList(int page) async {
-    final seriesListingRM = await dataSource.getSeriesList(page);
+  Future<SeriesListing> getSeriesList(int page, {String? query}) async {
+    final seriesListingRM = await dataSource.getSeriesList(page, query);
 
     return Future.value(seriesListingRM.toDomain());
   }
 
   @override
-  Future<TvShowListing> getTvShowList(int page) async{
-    final tvShowListing = await dataSource.getTvShowList(page);
+  Future<TvShowListing> getTvShowList(int page, {String? query}) async {
+    final tvShowListing = await dataSource.getTvShowList(page, query);
 
     return Future.value(tvShowListing.toDomain());
   }

@@ -10,6 +10,14 @@ class MovieContentBloc extends PaginationBloc<Movie, PaginationListingError> {
   }) {
     MergeStream(
       [
+        onQuery
+            .debounce(
+              (event) => TimerStream(
+                true,
+                const Duration(seconds: 1),
+              ),
+            )
+            .flatMap(_searchMovieList),
         onNexPageRequestSubject.stream.flatMap(_getMovieList),
       ],
     ).listen(onNextStateSubject.add).addTo(subscriptions);
@@ -17,30 +25,71 @@ class MovieContentBloc extends PaginationBloc<Movie, PaginationListingError> {
 
   final GetMovieListUseCase getMovieListUseCase;
 
+  final BehaviorSubject<String> onQuery = BehaviorSubject<String>.seeded('');
+
+  Stream<PaginationListingState<Movie, PaginationListingError>> _getMovieList(
+      int offset) async* {
+    if (onQuery.value.isEmpty) {
+      final lastListingState = onNextStateSubject.value;
+
+      try {
+        if (lastListingState.list != null) {
+          page++;
+        }
+
+        final listsListing = await getMovieListUseCase(
+          GetMovieListUseCaseParams(
+            page: page,
+          ),
+        );
+
+        yield PaginationListingState<Movie, PaginationListingError>(
+          nextOffset: listsListing.hasNext ? page : null,
+          list: [
+            ...lastListingState.list ?? [],
+            ...listsListing.list,
+          ],
+        );
+      } catch (error) {
+        yield PaginationListingState<Movie, PaginationListingError>(
+          error: PaginationListingError(),
+          nextOffset: lastListingState.nextOffset,
+          list: lastListingState.list,
+        );
+      }
+    }
+  }
+
   Stream<PaginationListingState<Movie, PaginationListingError>>
-  _getMovieList(int offset) async* {
-    final lastListingState = onNextStateSubject.value;
+      _searchMovieList(String query) async* {
+    yield const PaginationListingState<Movie, PaginationListingError>();
 
     try {
-      if (lastListingState.list != null) {
-        page++;
-      }
-
-      final listsListing = await getMovieListUseCase(page);
+      page = 1;
+      final listsListing = await getMovieListUseCase(
+        GetMovieListUseCaseParams(
+          page: page,
+          query: query,
+        ),
+      );
 
       yield PaginationListingState<Movie, PaginationListingError>(
-        nextOffset: listsListing.hasNext ? page : null,
-        list: [
-          ...lastListingState.list ?? [],
-          ...listsListing.list,
-        ],
+        list: listsListing.list,
       );
     } catch (error) {
       yield PaginationListingState<Movie, PaginationListingError>(
         error: PaginationListingError(),
-        nextOffset: lastListingState.nextOffset,
-        list: lastListingState.list,
+        nextOffset: 0,
+        list: [],
       );
     }
+  }
+
+  void onSearch(String query) => onQuery.add(query);
+
+  @override
+  void dispose() {
+    onQuery.close();
+    super.dispose();
   }
 }

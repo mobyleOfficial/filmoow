@@ -1,20 +1,20 @@
+import 'package:domain/model/content.dart';
 import 'package:domain/model/seen_status.dart';
 
-class Movie {
-  const Movie({
-    required this.id,
-    required this.name,
-    required this.imageUrl,
-    required this.status,
-    this.score,
-    this.commentsQuantity,
-
-  });
-
-  final String id;
-  final String name;
-  final String imageUrl;
-  final SeenStatus status;
-  final double? score;
-  final int? commentsQuantity;
+class Movie extends Content {
+  Movie({
+    required String id,
+    required String name,
+    required String imageUrl,
+    required SeenStatus status,
+    int? commentsQuantity,
+    double? score,
+  }) : super(
+          id: id,
+          name: name,
+          imageUrl: imageUrl,
+          status: status,
+          score: score,
+          commentsQuantity: commentsQuantity,
+        );
 }

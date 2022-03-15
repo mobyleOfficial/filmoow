@@ -1,7 +1,7 @@
 import 'package:domain/use_case/get_series_list_use_case.dart';
-import 'package:filmoow/presentation/content/movie_content/movie_content_page.dart';
+import 'package:filmoow/infrastructure/routes/route_name_builder.dart';
+import 'package:filmoow/presentation/content/common/content_list_page.dart';
 import 'package:filmoow/presentation/content/series_content/series_content_bloc.dart';
-import 'package:filmoow/presentation/content/series_content/series_content_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
@@ -33,8 +33,13 @@ class SeriesContentContainer extends StatelessWidget {
   final SeriesContentBloc bloc;
 
   @override
-  Widget build(BuildContext context) => SeriesContentPage(
+  Widget build(BuildContext context) => ContentListPage(
         onNextListState: bloc.onNextState,
         requestNextPage: bloc.requestNextPage,
+        onSearch: (query) => bloc.onSearch(query ?? ''),
+        onTap: (id) => Navigator.of(context).pushNamed(
+          RouteNameBuilder.getContentDetailRoute(),
+          arguments: id,
+        ),
       );
 }
